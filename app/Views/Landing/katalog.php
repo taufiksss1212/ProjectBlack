@@ -529,48 +529,38 @@
         </div>
     </div>
 </div>
-
 <script>
-    /** * DATA DARI DATABASE (PHP -> JS) 
-     * Tidak ada lagi data dummy manual di sini.
-     */
+    /** * DATA DARI DATABASE (PHP -> JS) */
     const dbProducts = <?= json_encode($products); ?>;
     const dbFilters = <?= json_encode($subCats); ?>;
-
-    // Konfigurasi Base URL untuk Gambar (Sesuaikan path folder upload kamu)
-    // Asumsi: Di database kolom gambar_produk isinya 'file.jpg', bukan full URL
-    // Jika di database sudah full URL, kosongkan variable ini.
     const imageBasePath = "<?= base_url('uploads/products/') ?>";
 
-    // Formatting Uang Rupiah
     const formatRupiah = (number) => {
         return new Intl.NumberFormat('id-ID', {
             maximumSignificantDigits: 3
         }).format(number);
     }
 
-    // Fungsi Render Grid
+    // --- (Fungsi renderGrid dan showDetail TETAP SAMA, tidak perlu diubah) ---
+    // Copy paste fungsi renderGrid dan showDetail dari kode sebelumnya di sini 
+    // atau biarkan jika Anda hanya mengupdate bagian bawah ini:
+
     function renderGrid(data) {
         const grid = document.getElementById('catalogGrid');
         const empty = document.getElementById('emptyState');
         grid.innerHTML = '';
-
         if (data.length === 0) {
             empty.classList.remove('d-none');
         } else {
             empty.classList.add('d-none');
             data.forEach(item => {
-                // Cek apakah gambar URL penuh atau nama file saja
                 let imgUrl = item.gambar_produk.includes('http') ? item.gambar_produk : imageBasePath + item
                     .gambar_produk;
-
-                // Cek Flash Sale
                 let priceHtml = `Rp ${formatRupiah(item.harga)}`;
                 if (item.is_flash_sale == 1 && item.harga_coret > 0) {
                     priceHtml =
                         `<small class="text-danger text-decoration-line-through me-1 fs-6">${formatRupiah(item.harga_coret)}</small> Rp ${formatRupiah(item.harga)}`;
                 }
-
                 const cardHTML = `
                     <div class="col-6 col-lg-3" data-aos="fade-up">
                         <div class="catalog-card">
@@ -585,52 +575,41 @@
                                 <button class="btn-detail-gold" onclick="showDetail(${item.id})">DETAIL</button>
                             </div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
                 grid.innerHTML += cardHTML;
             });
         }
     }
 
-    // Fungsi Tampilkan Detail (Mapping kolom database ke Modal)
     function showDetail(id) {
-        // Cari produk di array JS (ini cepat karena data sudah di-load)
         const product = dbProducts.find(p => p.id == id);
-
         if (product) {
             let imgUrl = product.gambar_produk.includes('http') ? product.gambar_produk : imageBasePath + product
                 .gambar_produk;
-
             document.getElementById('detailImg').src = imgUrl;
             document.getElementById('detailName').innerText = product.nama_produk;
             document.getElementById('detailPriceDisplay').innerText = 'Rp ' + formatRupiah(product.harga);
             document.getElementById('detailUnit').innerText = product.satuan_jual;
             document.getElementById('detailCat').innerText = product.nama_bahan + ' - ' + product.nama_varian;
-
-            // Spesifikasi
             document.getElementById('specWidth').innerText = product.lebar_kain;
             document.getElementById('specMaterial').innerText = product.nama_bahan;
             document.getElementById('specChar').innerText = product.karakteristik || '-';
             document.getElementById('specConst').innerText = product.konstruksi_kain || '-';
             document.getElementById('detailDesc').innerText = product.deskripsi_bahan || '';
-
-            // Flash Sale Badge
             const badge = document.getElementById('detailBadge');
             if (product.is_flash_sale == 1) badge.classList.remove('d-none');
             else badge.classList.add('d-none');
-
-            // Link WhatsApp
             const message =
                 `Halo Tamara Textile, saya tertarik dengan produk *${product.nama_produk}*. Apakah stok tersedia?`;
             const waUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(message)}`;
             document.getElementById('waLink').href = waUrl;
-
             var myModal = new bootstrap.Modal(document.getElementById('productDetailModal'));
             myModal.show();
         }
     }
 
-    // Navigasi Filter: Step 1 -> Step 2
+    // --- UPDATED: BAGIAN FILTER GAMBAR ---
+
     function goToStep2(groupSlug, groupName) {
         document.getElementById('step1').classList.remove('active');
         document.getElementById('step2').classList.add('active');
@@ -639,16 +618,28 @@
         const listContainer = document.getElementById('subCategoryList');
         listContainer.innerHTML = '';
 
-        // Ambil varian berdasarkan slug kelompok dari data DB
         const variants = dbFilters[groupSlug];
 
         if (variants) {
             variants.forEach(variant => {
+                // LOGIKA GAMBAR:
+                // Jika ada gambar_varian di DB, pakai itu. Jika tidak, pakai warna hex sebagai fallback.
+                let iconHtml = '';
+                if (variant.image && variant.image !== 'null') {
+                    // Tampilkan Gambar Bulat
+                    iconHtml =
+                        `<img src="${variant.image}" class="rounded-circle shadow-sm me-3" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #fff;">`;
+                } else {
+                    // Fallback ke Hex Color jika gambar kosong
+                    iconHtml =
+                        `<span class="color-circle me-3" style="background: ${variant.color}; width:40px; height:40px;"></span>`;
+                }
+
                 listContainer.innerHTML += `
                     <div class="filter-item" onclick="applyFilter('${groupSlug}', '${variant.id}', '${variant.label}')">
                         <div class="d-flex align-items-center">
-                            <span class="color-dot" style="background: ${variant.color};"></span>
-                            <span class="fw-bold text-dark">${variant.label}</span>
+                            ${iconHtml}
+                            <span class="fw-bold text-dark fs-5">${variant.label}</span>
                         </div>
                         <i class="fas fa-check text-gold opacity-0"></i>
                     </div>
@@ -656,9 +647,8 @@
             });
         }
 
-        // Tombol "Lihat Semua"
         listContainer.innerHTML +=
-            `<div class="filter-item mt-3 bg-light justify-content-center" onclick="applyFilter('${groupSlug}', 'all', 'Semua ${groupName}')">
+            `<div class="filter-item mt-3 bg-light justify-content-center p-3" onclick="applyFilter('${groupSlug}', 'all', 'Semua ${groupName}')">
                 <span class="fw-bold text-muted small text-uppercase">Lihat Semua ${groupName}</span>
             </div>`;
     }
@@ -668,7 +658,6 @@
         document.getElementById('step1').classList.add('active');
     }
 
-    // Logika Filter Utama
     function applyFilter(groupSlug, variantSlug, labelName) {
         const modalEl = document.getElementById('filterModal');
         const modal = bootstrap.Modal.getInstance(modalEl);
@@ -678,16 +667,12 @@
 
         let filteredData;
         if (variantSlug === 'all') {
-            // Filter berdasarkan Kelompok Warna (slug_kelompok)
             filteredData = dbProducts.filter(p => p.slug_kelompok === groupSlug);
         } else {
-            // Filter berdasarkan Varian Spesifik (slug_warna)
             filteredData = dbProducts.filter(p => p.slug_kelompok === groupSlug && p.slug_warna === variantSlug);
         }
 
         renderGrid(filteredData);
-
-        // Reset modal ke tampilan awal setelah delay sedikit
         setTimeout(() => backToStep1(), 500);
     }
 
@@ -696,10 +681,8 @@
         document.getElementById('productCountTitle').innerText = "SEMUA KOLEKSI";
     }
 
-    // Init
     document.addEventListener('DOMContentLoaded', () => {
         renderGrid(dbProducts);
     });
 </script>
-
 <?= $this->endSection(); ?>

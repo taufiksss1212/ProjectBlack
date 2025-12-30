@@ -12,18 +12,18 @@ class Katalog extends BaseController
         $db = \Config\Database::connect();
         $produkModel = new ProdukModel();
 
-        // 1. TANGKAP KEYWORD DARI URL
-        // Contoh: ?keyword=satin
+        // 1. TANGKAP KEYWORD
         $keyword = $this->request->getGet('keyword');
 
-        // 2. Kirim keyword ke Model
+        // 2. AMBIL PRODUK
         $products = $produkModel->getLengkap($keyword);
 
-        // --- Bagian Filter Sidebar (Tetap Sama) ---
+        // 3. AMBIL FILTER (UPDATED: Ambil gambar_varian)
         $queryFilter = $db->query("
             SELECT 
                 kw.slug as group_slug, kw.nama_kelompok, kw.kode_hex as group_hex,
-                vw.slug as variant_slug, vw.nama_varian, vw.kode_hex as variant_hex
+                vw.slug as variant_slug, vw.nama_varian, vw.kode_hex as variant_hex,
+                vw.gambar_varian -- <--- KOLOM BARU DIAMBIL DISINI
             FROM kelompok_warna kw
             JOIN varian_warna vw ON vw.id_kelompok_warna = kw.id
             ORDER BY kw.id ASC, vw.nama_varian ASC
@@ -34,6 +34,7 @@ class Katalog extends BaseController
         $colorGroups = [];
 
         foreach ($rawFilter as $row) {
+            // Step 1: Grouping (Tetap pakai Hex untuk ikon grup besar)
             if (!isset($colorGroups[$row['group_slug']])) {
                 $colorGroups[$row['group_slug']] = [
                     'label' => $row['nama_kelompok'],
@@ -41,10 +42,13 @@ class Katalog extends BaseController
                     'slug'  => $row['group_slug']
                 ];
             }
+
+            // Step 2: Variants (Sekarang pakai Image)
             $filters[$row['group_slug']][] = [
                 'id'    => $row['variant_slug'],
                 'label' => $row['nama_varian'],
-                'color' => $row['variant_hex']
+                'color' => $row['variant_hex'],      // Tetap simpan hex sebagai backup
+                'image' => $row['gambar_varian']     // <--- DATA GAMBAR DISIMPAN DISINI
             ];
         }
 
@@ -53,7 +57,7 @@ class Katalog extends BaseController
             'products'    => $products,
             'colorGroups' => array_values($colorGroups),
             'subCats'     => $filters,
-            'keyword'     => $keyword // Kirim balik keyword ke view agar input tidak kosong setelah search
+            'keyword'     => $keyword
         ];
 
         return view('Landing/katalog', $data);
