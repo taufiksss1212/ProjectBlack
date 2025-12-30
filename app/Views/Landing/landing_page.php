@@ -3,7 +3,6 @@
 <?= $this->section('content'); ?>
 
 <style>
-    /* Hero Title Gold Style */
     .hero-title-gold {
         font-size: 5.5rem;
         font-weight: 700;
@@ -514,12 +513,15 @@
             padding: 0.8rem !important;
         }
     }
+
+    .object-fit-cover {
+        object-fit: cover;
+    }
 </style>
 
 <header class="hero-wrapper">
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
-
     <div class="hero-content floating-anim" data-aos="zoom-in" data-aos-duration="1500">
         <p class="hero-subtitle mb-2">Premium Fabric Collection</p>
         <h1 class="hero-title-gold">Tamara Textile</h1>
@@ -532,10 +534,6 @@
         <a href="katalog" class="btn btn-gold-outline shadow-lg ls-1">Lihat Katalog <i
                 class="fas fa-arrow-right ms-2"></i></a>
     </div>
-    <div
-        style="position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); color: #d4af37; animation: bounce 2s infinite;">
-        <i class="fas fa-chevron-down fa-2x opacity-75"></i>
-    </div>
 </header>
 
 <div class="ticker-wrap shadow">
@@ -544,19 +542,14 @@
         <span class="ticker-item"><i class="fas fa-truck me-2"></i>Pengiriman Seluruh Indonesia</span>
         <span class="ticker-item"><i class="fas fa-tags me-2"></i>Harga Grosir & Eceran Terbaik</span>
         <span class="ticker-item"><i class="fas fa-undo me-2"></i>Jaminan Retur Mudah</span>
-        <span class="ticker-item"><i class="fas fa-star me-2"></i>Premium Quality Grade A</span>
-        <span class="ticker-item"><i class="fas fa-truck me-2"></i>Pengiriman Seluruh Indonesia</span>
-        <span class="ticker-item"><i class="fas fa-tags me-2"></i>Harga Grosir & Eceran Terbaik</span>
     </div>
 </div>
 
 <section id="about" class="section-padding text-center bg-white overflow-hidden">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
     <div class="container position-relative z-2">
         <div class="row justify-content-center align-items-center">
             <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-right">
-                <img src="https://images.unsplash.com/photo-1550614000-4b9519e00664?q=80&w=600&h=700&auto=format&fit=crop"
+                <img src="https://images.unsplash.com/photo-1550614000-4b9519e00664?q=80&w=600&auto=format&fit=crop"
                     alt="About" class="img-fluid rounded-pill shadow-lg floating-anim"
                     style="max-height: 400px; border: 5px solid white;">
             </div>
@@ -565,15 +558,14 @@
                 <h2 class="mt-2 mb-3">Elegance in Every Thread</h2>
                 <div class="divider ms-0"></div>
                 <p class="text-secondary fs-5" style="line-height: 1.9;">
-                    <strong>Tamara Textile</strong> hadir sebagai partner terpercaya bagi para desainer dan pegiat
-                    fashion profesional.
-                    Kami mengkurasi bahan tekstil terbaik dengan kualitas Grade A, warna yang konsisten, dan sentuhan
-                    mewah.
+                    <strong>Tamara Textile</strong> hadir sebagai partner terpercaya bagi para desainer.
+                    Kami mengkurasi bahan tekstil terbaik dengan kualitas Grade A, warna konsisten, dan sentuhan mewah.
                 </p>
             </div>
         </div>
     </div>
 </section>
+
 
 <section id="produk" class="section-padding bg-soft overflow-hidden">
     <div class="container position-relative z-2">
@@ -582,47 +574,41 @@
             <div class="divider"></div>
             <p class="text-muted">Pilihan favorit pelanggan kami bulan ini</p>
         </div>
-        <div class="row g-4">
-            <div class="col-6 col-md-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="product-card">
-                    <div class="product-img-wrapper"><img
-                            src="https://images.unsplash.com/photo-1612459807212-32a225424757?q=80&w=600&h=800&auto=format&fit=crop"
-                            class="product-img" alt="Satin"></div>
-                    <div class="p-4 text-center">
-                        <h4>Satin Silk</h4>
-                        <p class="text-muted small">Kilau mewah.</p>
-                        <h5 class="fw-bold mt-3 text-gold fs-4">Rp 45.000 <small class="text-muted fs-6">/m</small></h5>
+
+        <div class="row g-4 justify-content-center">
+
+            <?php if (empty($populer)): ?>
+                <div class="text-center text-muted">Belum ada data produk populer.</div>
+            <?php else: ?>
+                <?php foreach ($populer as $i => $p): ?>
+                    <?php
+                    // Cek URL gambar (apakah link luar atau file lokal)
+                    $imgUrl = strpos($p['gambar_produk'], 'http') === 0 ? $p['gambar_produk'] : base_url('uploads/products/' . $p['gambar_produk']);
+                    $delay = ($i + 1) * 100; // Efek delay animasi bertingkat
+                    ?>
+                    <div class="col-6 col-md-4" data-aos="fade-up" data-aos-delay="<?= $delay ?>">
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
+                                <img src="<?= $imgUrl ?>" class="product-img" alt="<?= $p['nama_produk'] ?>">
+                            </div>
+                            <div class="p-4 text-center">
+                                <h4><?= $p['nama_bahan'] ?></h4>
+                                <p class="text-muted small text-truncate"><?= $p['nama_produk'] ?></p>
+                                <h5 class="fw-bold mt-3 text-gold fs-4">
+                                    Rp <?= number_format($p['harga'], 0, ',', '.') ?>
+                                    <small class="text-muted fs-6">/ <?= $p['satuan_jual'] ?></small>
+                                </h5>
+                                <a href="katalog" class="btn btn-sm btn-outline-dark rounded-pill mt-2 px-4">Lihat Detail</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="product-card">
-                    <div class="product-img-wrapper"><img
-                            src="https://images.unsplash.com/photo-1620799140408-ed5341cd2431?q=80&w=600&h=800&auto=format&fit=crop"
-                            class="product-img" alt="Linen"></div>
-                    <div class="p-4 text-center">
-                        <h4>Pure Linen</h4>
-                        <p class="text-muted small">Serat alami.</p>
-                        <h5 class="fw-bold mt-3 text-gold fs-4">Rp 85.000 <small class="text-muted fs-6">/m</small></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-4" data-aos="fade-up" data-aos-delay="300">
-                <div class="product-card">
-                    <div class="product-img-wrapper"><img
-                            src="https://images.unsplash.com/photo-1584912311636-62281c382458?q=80&w=600&h=800&auto=format&fit=crop"
-                            class="product-img" alt="Brokat"></div>
-                    <div class="p-4 text-center">
-                        <h4>Brokat Tile</h4>
-                        <p class="text-muted small">Motif eksklusif.</p>
-                        <h5 class="fw-bold mt-3 text-gold fs-4">Rp 120.000 <small class="text-muted fs-6">/m</small>
-                        </h5>
-                    </div>
-                </div>
-            </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
         </div>
     </div>
 </section>
+
 
 <section id="flashsale" class="flash-sale-section">
     <div class="container position-relative" style="z-index: 2;">
@@ -630,16 +616,6 @@
             <span class="badge bg-danger rounded-pill px-4 py-2 mb-3 fs-6 bounce-hover"><i
                     class="fas fa-bolt me-2"></i>LIMITED TIME OFFER</span>
             <h2 class="display-4 fw-bold text-white">Flash Sale Hari Ini</h2>
-
-            <div class="fs-banner-wrap">
-                <div class="fs-ticker">
-                    <span class="fs-item"><i class="fas fa-exclamation-circle me-2"></i>Stok Sangat Terbatas! Jangan
-                        Sampai Kehabisan.</span>
-                    <span class="fs-item"><i class="fas fa-fire me-2"></i>Harga Termurah Tahun Ini!</span>
-                    <span class="fs-item"><i class="fas fa-exclamation-circle me-2"></i>Stok Sangat Terbatas! Jangan
-                        Sampai Kehabisan.</span>
-                </div>
-            </div>
 
             <div class="countdown-box">
                 <div class="time-unit"><span id="hours" class="time-val">00</span><span class="time-label">Jam</span>
@@ -651,82 +627,67 @@
             </div>
         </div>
 
-        <div class="row g-4">
-            <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="100">
-                <div class="card flash-card shine-effect">
-                    <span class="flash-badge">30% OFF</span>
-                    <div class="flash-img-wrapper"><img
-                            src="https://images.unsplash.com/photo-1604582410491-605e72535457?q=80&w=400&h=400&auto=format&fit=crop"
-                            class="flash-img" alt="Kain"></div>
-                    <div class="card-body p-4">
-                        <h6 class="fw-bold mb-2">Wolfis Grade A</h6>
-                        <div class="mb-3"><small class="text-muted text-decoration-line-through me-2">28rb</small><span
-                                class="text-danger fw-bold fs-5">19.5rb</span></div>
-                        <div class="stock-bar mb-2">
-                            <div class="stock-fill" style="width: 85%"></div>
+        <div class="row g-4 justify-content-center">
+
+            <?php if (empty($flash_sale)): ?>
+                <div class="text-center text-white-50">Tidak ada promo flash sale saat ini.</div>
+            <?php else: ?>
+                <?php foreach ($flash_sale as $i => $fs): ?>
+                    <?php
+                    $imgUrl = strpos($fs['gambar_produk'], 'http') === 0 ? $fs['gambar_produk'] : base_url('uploads/products/' . $fs['gambar_produk']);
+
+                    // Hitung Diskon Otomatis (%)
+                    $persenDiskon = 0;
+                    if ($fs['harga_coret'] > 0) {
+                        $persenDiskon = round((($fs['harga_coret'] - $fs['harga']) / $fs['harga_coret']) * 100);
+                    }
+
+                    // Simulasi Progress Bar Stok (Max 100)
+                    $stokPersen = $fs['stok'] > 100 ? 100 : $fs['stok'];
+                    ?>
+                    <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="<?= ($i + 1) * 100 ?>">
+                        <div class="card flash-card shine-effect">
+                            <?php if ($persenDiskon > 0): ?>
+                                <span class="flash-badge"><?= $persenDiskon ?>% OFF</span>
+                            <?php endif; ?>
+
+                            <div class="flash-img-wrapper">
+                                <img src="<?= $imgUrl ?>" class="flash-img" alt="<?= $fs['nama_produk'] ?>">
+                            </div>
+
+                            <div class="card-body p-4">
+                                <h6 class="fw-bold mb-2 text-truncate"><?= $fs['nama_produk'] ?></h6>
+                                <div class="mb-3">
+                                    <small class="text-muted text-decoration-line-through me-2">
+                                        Rp<?= number_format($fs['harga_coret'] / 1000, 0) ?>rb
+                                    </small>
+                                    <span class="text-danger fw-bold fs-5">
+                                        <?= number_format($fs['harga'] / 1000, 1) ?>rb
+                                    </span>
+                                </div>
+
+                                <div class="d-flex justify-content-between small text-muted mb-1">
+                                    <span>Tersedia</span>
+                                    <span><?= number_format($fs['stok']) ?> <?= $fs['satuan_jual'] ?></span>
+                                </div>
+                                <div class="stock-bar mb-2">
+                                    <div class="stock-fill" style="width: <?= $stokPersen ?>%"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="200">
-                <div class="card flash-card shine-effect">
-                    <span class="flash-badge">25% OFF</span>
-                    <div class="flash-img-wrapper"><img
-                            src="https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?q=80&w=400&h=400&auto=format&fit=crop"
-                            class="flash-img" alt="Kain"></div>
-                    <div class="card-body p-4">
-                        <h6 class="fw-bold mb-2">Toyobo Fodu</h6>
-                        <div class="mb-3"><small class="text-muted text-decoration-line-through me-2">45rb</small><span
-                                class="text-danger fw-bold fs-5">33rb</span></div>
-                        <div class="stock-bar mb-2">
-                            <div class="stock-fill" style="width: 60%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="300">
-                <div class="card flash-card shine-effect">
-                    <span class="flash-badge">40% OFF</span>
-                    <div class="flash-img-wrapper"><img
-                            src="https://images.unsplash.com/photo-1598048145788-b715694a5e01?q=80&w=400&h=400&auto=format&fit=crop"
-                            class="flash-img" alt="Kain"></div>
-                    <div class="card-body p-4">
-                        <h6 class="fw-bold mb-2">Ceruti Doll</h6>
-                        <div class="mb-3"><small class="text-muted text-decoration-line-through me-2">35rb</small><span
-                                class="text-danger fw-bold fs-5">21rb</span></div>
-                        <div class="stock-bar mb-2">
-                            <div class="stock-fill" style="width: 92%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="400">
-                <div class="card flash-card shine-effect">
-                    <span class="flash-badge">20% OFF</span>
-                    <div class="flash-img-wrapper"><img
-                            src="https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=400&h=400&auto=format&fit=crop"
-                            class="flash-img" alt="Kain"></div>
-                    <div class="card-body p-4">
-                        <h6 class="fw-bold mb-2">Maxmara Lux</h6>
-                        <div class="mb-3"><small class="text-muted text-decoration-line-through me-2">55rb</small><span
-                                class="text-danger fw-bold fs-5">44rb</span></div>
-                        <div class="stock-bar mb-2">
-                            <div class="stock-fill" style="width: 45%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
         </div>
     </div>
 </section>
 
 <section id="kontak" class="section-padding bg-white overflow-hidden">
-    <div class="blob blob-2" style="left: -10%; top: 20%;"></div>
     <div class="container position-relative z-2">
         <div class="text-center mb-5" data-aos="fade-up">
             <h2>Hubungi Kami</h2>
             <div class="divider"></div>
-            <p class="text-muted">Kami siap membantu kebutuhan kain Anda. Silakan hubungi kontak di bawah ini.</p>
         </div>
         <div class="row align-items-center g-5">
             <div class="col-lg-5" data-aos="fade-right">
@@ -737,35 +698,20 @@
                         <p class="text-muted mb-0">0812-3456-7890 (24 Jam)</p>
                     </div>
                 </div>
-                <div class="contact-card">
-                    <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+                <div class="contact-card mt-3">
+                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
                     <div>
-                        <h5 class="fw-bold mb-1">Telepon Kantor</h5>
-                        <p class="text-muted mb-0">(022) 456-7890</p>
+                        <h5 class="fw-bold mb-1">Lokasi Store</h5>
+                        <p class="text-muted mb-0">Jl. Gatot Subroto No. 88, Bandung</p>
                     </div>
-                </div>
-                <div class="contact-card">
-                    <div class="contact-icon"><i class="far fa-envelope"></i></div>
-                    <div>
-                        <h5 class="fw-bold mb-1">Email Support</h5>
-                        <p class="text-muted mb-0">hello@tamaratextile.com</p>
-                    </div>
-                </div>
-                <div class="mt-5">
-                    <h6 class="fw-bold mb-3">Ikuti Kami:</h6><a href="#" class="social-btn"><i
-                            class="fab fa-instagram"></i></a><a href="#" class="social-btn"><i
-                            class="fab fa-facebook-f"></i></a><a href="#" class="social-btn"><i
-                            class="fab fa-tiktok"></i></a>
                 </div>
             </div>
             <div class="col-lg-7" data-aos="fade-left">
-                <div class="map-container shadow-lg"><iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.888098013676!2d107.61526631477277!3d-6.903449495007356!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e64c5e88662f%3A0x300c5e82dd4b750!2sBandung%2C%20Bandung%20City%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1629787541234!5m2!1sen!2sid"
+                <div class="map-container shadow-lg">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.8339790425946!2d107.61678131477286!3d-6.910452994999968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e64c5e8866e5%3A0x37be7ac9d575f7ed!2sGedung%20Sate!5e0!3m2!1sid!2sid!4v1625642232532!5m2!1sid!2sid"
                         width="100%" height="450" style="border:0; filter: grayscale(20%);" allowfullscreen=""
-                        loading="lazy"></iframe></div>
-                <div class="mt-4 text-center">
-                    <h5><i class="fas fa-map-marker-alt text-danger me-2"></i>Tamara Textile Store</h5>
-                    <p class="text-muted">Jl. Gatot Subroto No. 88, Kawasan Sentra Tekstil, Bandung, Jawa Barat</p>
+                        loading="lazy"></iframe>
                 </div>
             </div>
         </div>
@@ -775,19 +721,24 @@
 <script>
     function startFlashSaleTimer() {
         const now = new Date();
+        // Set timer selalu berakhir jam 23:59:59 hari ini
         const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).getTime();
+
         const timer = setInterval(function() {
             const now = new Date().getTime();
             const distance = endDate - now;
+
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
             const h = document.getElementById("hours");
             if (h) {
                 h.innerText = hours < 10 ? "0" + hours : hours;
                 document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
                 document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
             }
+
             if (distance < 0) clearInterval(timer);
         }, 1000);
     }

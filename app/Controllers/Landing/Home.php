@@ -3,25 +3,36 @@
 namespace App\Controllers\Landing;
 
 use App\Controllers\BaseController;
+use App\Models\ProdukModel;
 
 class Home extends BaseController
 {
     public function index()
     {
+        $produkModel = new ProdukModel();
+
+        // 1. Ambil Data Flash Sale (Max 4 item)
+        // Syarat: is_flash_sale = 1
+        $flashSale = $produkModel->select('produk_kain.*, jenis_kain.nama_bahan')
+            ->join('jenis_kain', 'jenis_kain.id = produk_kain.id_jenis_kain')
+            ->where('is_flash_sale', 1)
+            ->orderBy('rand()') // Acak biar fresh tiap refresh (opsional)
+            ->limit(4)
+            ->findAll();
+
+        // 2. Ambil Data Populer (Max 3 item)
+        // Kita ambil 3 produk terbaru yang BUKAN flash sale (biar beda isinya)
+        $populer = $produkModel->select('produk_kain.*, jenis_kain.nama_bahan')
+            ->join('jenis_kain', 'jenis_kain.id = produk_kain.id_jenis_kain')
+            ->where('is_flash_sale', 0)
+            ->orderBy('id', 'DESC') // Produk terbaru
+            ->limit(3)
+            ->findAll();
+
         $data = [
-            'title' => 'Tamara Textile - Pusat Kain Berkualitas',
-            // Data Dummy Produk Populer
-            'products' => [
-                ['name' => 'Satin Silk Premium', 'price' => 'Rp 45.000/m', 'img' => 'https://placehold.co/400x300/6a0572/fff?text=Satin+Silk'],
-                ['name' => 'Cotton Combed 30s', 'price' => 'Rp 85.000/kg', 'img' => 'https://placehold.co/400x300/ab0e86/fff?text=Cotton+Combed'],
-                ['name' => 'Rayon Viscose Motif', 'price' => 'Rp 35.000/m', 'img' => 'https://placehold.co/400x300/d63384/fff?text=Rayon+Viscose'],
-                ['name' => 'Brokat Tile 3D', 'price' => 'Rp 120.000/m', 'img' => 'https://placehold.co/400x300/fd7e14/fff?text=Brokat+3D'],
-            ],
-            // Data Dummy Flash Sale
-            'flash_sale' => [
-                ['name' => 'Wolfis Grade A', 'price_coret' => 'Rp 30.000', 'price' => 'Rp 19.900/m', 'img' => 'https://placehold.co/400x300/20c997/fff?text=Wolfis+Promo'],
-                ['name' => 'Toyobo Fodu', 'price_coret' => 'Rp 45.000', 'price' => 'Rp 32.500/m', 'img' => 'https://placehold.co/400x300/0dcaf0/fff?text=Toyobo+Promo'],
-            ]
+            'title'      => 'Tamara Textile - Pusat Kain Berkualitas',
+            'populer'    => $populer,
+            'flash_sale' => $flashSale
         ];
 
         return view('Landing/landing_page', $data);

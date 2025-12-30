@@ -3,7 +3,9 @@
 <?= $this->section('content'); ?>
 
 <style>
-    /* --- HEADER & LAYOUT UTAMA --- */
+    /* ... (Copy paste style CSS kamu yang tadi di sini) ... */
+    /* Agar rapi, saya skip bagian CSS karena sama persis */
+
     .catalog-header {
         height: 60vh;
         background: linear-gradient(to bottom, rgba(15, 32, 39, 0.8), rgba(15, 32, 39, 0.9)), url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2000&auto=format&fit=crop');
@@ -405,6 +407,7 @@
 <section class="pb-5 bg-soft" style="min-height: 600px;">
     <div class="container">
         <div class="row g-4" id="catalogGrid"></div>
+
         <div id="emptyState" class="text-center py-5 d-none">
             <i class="fas fa-box-open fa-4x text-gold mb-3 opacity-50"></i>
             <h3>Produk Tidak Ditemukan</h3>
@@ -413,6 +416,47 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="filterModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-luxury">
+            <div class="modal-header modal-header-luxury">
+                <h5 class="modal-title text-white playfair" id="modalTitle">Pilih Warna Dasar</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 bg-light">
+
+                <div id="step1" class="step-view active">
+                    <p class="text-muted small text-uppercase mb-3 fw-bold">Step 1: Pilih Kelompok Warna</p>
+
+                    <?php foreach ($colorGroups as $group) : ?>
+                        <div class="filter-item" onclick="goToStep2('<?= $group['slug'] ?>', '<?= $group['label'] ?>')">
+                            <div class="d-flex align-items-center">
+                                <span class="color-circle" style="background: <?= $group['hex'] ?>;"></span>
+                                <span class="fw-bold"><?= $group['label'] ?></span>
+                            </div>
+                            <i class="fas fa-chevron-right text-muted"></i>
+                        </div>
+                    <?php endforeach; ?>
+
+                </div>
+
+                <div id="step2" class="step-view">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="backToStep1()">
+                            <i class="fas fa-arrow-left me-1"></i> Kembali
+                        </button>
+                        <span class="badge bg-dark text-gold">Step 2</span>
+                    </div>
+                    <h5 class="fw-bold mb-3 playfair" id="subCategoryTitle">Pilih Varian</h5>
+                    <div id="subCategoryList"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="productDetailModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -427,6 +471,9 @@
                 <div class="row g-0">
                     <div class="col-lg-6 detail-left-col">
                         <img src="" id="detailImg" class="detail-img-full" alt="Foto Produk">
+                        <div id="detailBadge" class="position-absolute top-0 start-0 m-3 d-none">
+                            <span class="badge bg-danger rounded-pill px-3 py-2">Flash Sale</span>
+                        </div>
                     </div>
 
                     <div class="col-lg-6 detail-right-col">
@@ -434,12 +481,12 @@
                         <h2 class="detail-title-large" id="detailName">Nama Produk</h2>
 
                         <div class="detail-price-large">
-                            <span id="detailPriceDisplay">Rp 0</span> <span>/ meter</span>
+                            <span id="detailPriceDisplay">Rp 0</span> <span>/ <span id="detailUnit">m</span></span>
                         </div>
 
                         <p class="text-secondary" style="line-height: 1.7;">
-                            Nikmati kualitas kain premium Grade A dengan tekstur lembut dan warna yang tahan lama. Cocok
-                            untuk gaun, kemeja, atau busana muslimah yang elegan.
+                            Nikmati kualitas kain premium Grade A.
+                            <span id="detailDesc"></span>
                         </p>
 
                         <div class="spec-grid-clean">
@@ -447,28 +494,28 @@
                                 <i class="fas fa-ruler-horizontal"></i>
                                 <div class="spec-text">
                                     <h6>Lebar</h6>
-                                    <p id="specWidth">1.5m</p>
+                                    <p id="specWidth">-</p>
                                 </div>
                             </div>
                             <div class="spec-box">
                                 <i class="fas fa-layer-group"></i>
                                 <div class="spec-text">
                                     <h6>Bahan</h6>
-                                    <p id="specMaterial">Katun</p>
+                                    <p id="specMaterial">-</p>
                                 </div>
                             </div>
                             <div class="spec-box">
                                 <i class="fas fa-feather-alt"></i>
                                 <div class="spec-text">
-                                    <h6>Tekstur</h6>
-                                    <p id="specChar">Halus</p>
+                                    <h6>Karakteristik</h6>
+                                    <p id="specChar">-</p>
                                 </div>
                             </div>
                             <div class="spec-box">
-                                <i class="fas fa-check-circle"></i>
+                                <i class="fas fa-cube"></i>
                                 <div class="spec-text">
-                                    <h6>Status</h6>
-                                    <p class="text-success">Ready Stock</p>
+                                    <h6>Konstruksi</h6>
+                                    <p id="specConst">-</p>
                                 </div>
                             </div>
                         </div>
@@ -476,58 +523,7 @@
                         <a href="#" id="waLink" target="_blank" class="btn btn-wa-large">
                             <i class="fab fa-whatsapp fa-lg"></i> Pesan via WhatsApp
                         </a>
-                        <div class="text-center mt-3">
-                            <small class="text-muted" style="font-size: 0.7rem;">*Garansi retur jika barang cacat/tidak
-                                sesuai.</small>
-                        </div>
                     </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="filterModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-content-luxury">
-            <div class="modal-header modal-header-luxury">
-                <h5 class="modal-title text-white playfair" id="modalTitle">Pilih Warna Dasar</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4 bg-light">
-                <div id="step1" class="step-view active">
-                    <p class="text-muted small text-uppercase mb-3 fw-bold">Step 1: Pilih Kelompok Warna</p>
-                    <div class="filter-item" onclick="goToStep2('merah')">
-                        <div class="d-flex align-items-center"><span class="color-circle"
-                                style="background: #d32f2f;"></span><span class="fw-bold">Nuansa Merah</span></div><i
-                            class="fas fa-chevron-right text-muted"></i>
-                    </div>
-                    <div class="filter-item" onclick="goToStep2('biru')">
-                        <div class="d-flex align-items-center"><span class="color-circle"
-                                style="background: #1976d2;"></span><span class="fw-bold">Nuansa Biru</span></div><i
-                            class="fas fa-chevron-right text-muted"></i>
-                    </div>
-                    <div class="filter-item" onclick="goToStep2('hijau')">
-                        <div class="d-flex align-items-center"><span class="color-circle"
-                                style="background: #388e3c;"></span><span class="fw-bold">Nuansa Hijau</span></div><i
-                            class="fas fa-chevron-right text-muted"></i>
-                    </div>
-                    <div class="filter-item" onclick="goToStep2('netral')">
-                        <div class="d-flex align-items-center"><span class="color-circle"
-                                style="background: #ddd;"></span><span class="fw-bold">Nuansa Netral</span></div><i
-                            class="fas fa-chevron-right text-muted"></i>
-                    </div>
-                </div>
-                <div id="step2" class="step-view">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="backToStep1()"><i
-                                class="fas fa-arrow-left me-1"></i> Kembali</button>
-                        <span class="badge bg-dark text-gold">Step 2</span>
-                    </div>
-                    <h5 class="fw-bold mb-3 playfair" id="subCategoryTitle">Pilih Varian</h5>
-                    <div id="subCategoryList"></div>
                 </div>
             </div>
         </div>
@@ -535,200 +531,25 @@
 </div>
 
 <script>
-    // 1. DATA PRODUK LENGKAP
-    const allProducts = [
-        // MERAH
-        {
-            id: 1,
-            name: "Satin Silk Maroon",
-            cat: "merah",
-            sub: "maroon",
-            price: "45.000",
-            img: "https://placehold.co/400x500/5c0002/fff?text=Maroon",
-            width: "1.5 m",
-            mat: "Satin Silk Premium",
-            char: "Mengkilap, Jatuh"
-        },
-        {
-            id: 2,
-            name: "Wolfis Red Chilli",
-            cat: "merah",
-            sub: "cabe",
-            price: "28.000",
-            img: "https://placehold.co/400x500/ff0000/fff?text=Red+Chilli",
-            width: "1.5 m",
-            mat: "Wolfis Grade A",
-            char: "Tebal, Tidak Terawang"
-        },
-        {
-            id: 3,
-            name: "Velvet Rose Red",
-            cat: "merah",
-            sub: "rose",
-            price: "55.000",
-            img: "https://placehold.co/400x500/d10046/fff?text=Rose",
-            width: "1.5 m",
-            mat: "Velvet Junior",
-            char: "Lembut Beludru"
-        },
-        {
-            id: 4,
-            name: "Maxmara Burgundy",
-            cat: "merah",
-            sub: "maroon",
-            price: "60.000",
-            img: "https://placehold.co/400x500/4a001f/fff?text=Burgundy",
-            width: "1.5 m",
-            mat: "Maxmara Lux",
-            char: "Motif Elegan, Dingin"
-        },
+    /** * DATA DARI DATABASE (PHP -> JS) 
+     * Tidak ada lagi data dummy manual di sini.
+     */
+    const dbProducts = <?= json_encode($products); ?>;
+    const dbFilters = <?= json_encode($subCats); ?>;
 
-        // BIRU
-        {
-            id: 5,
-            name: "Toyobo Royal Blue",
-            cat: "biru",
-            sub: "royal",
-            price: "35.000",
-            img: "https://placehold.co/400x500/002366/fff?text=Royal+Blue",
-            width: "1.5 m",
-            mat: "Katun Toyobo",
-            char: "Serap Keringat"
-        },
-        {
-            id: 6,
-            name: "Linen Sky Blue",
-            cat: "biru",
-            sub: "sky",
-            price: "42.000",
-            img: "https://placehold.co/400x500/87ceeb/fff?text=Sky+Blue",
-            width: "1.5 m",
-            mat: "Linen Euro",
-            char: "Serat Alami Estetik"
-        },
-        {
-            id: 7,
-            name: "Drill Navy Blue",
-            cat: "biru",
-            sub: "navy",
-            price: "38.000",
-            img: "https://placehold.co/400x500/000080/fff?text=Navy",
-            width: "1.5 m",
-            mat: "American Drill",
-            char: "Kuat, Tebal, Awet"
-        },
+    // Konfigurasi Base URL untuk Gambar (Sesuaikan path folder upload kamu)
+    // Asumsi: Di database kolom gambar_produk isinya 'file.jpg', bukan full URL
+    // Jika di database sudah full URL, kosongkan variable ini.
+    const imageBasePath = "<?= base_url('uploads/products/') ?>";
 
-        // HIJAU
-        {
-            id: 8,
-            name: "Rayon Sage Green",
-            cat: "hijau",
-            sub: "sage",
-            price: "32.000",
-            img: "https://placehold.co/400x500/9dc183/fff?text=Sage",
-            width: "1.5 m",
-            mat: "Rayon Viscose",
-            char: "Sangat Adem, Jatuh"
-        },
-        {
-            id: 9,
-            name: "Canvas Army",
-            cat: "hijau",
-            sub: "army",
-            price: "50.000",
-            img: "https://placehold.co/400x500/4b5320/fff?text=Army",
-            width: "1.5 m",
-            mat: "Canvas Marsoto",
-            char: "Kaku, Kokoh"
-        },
-        {
-            id: 10,
-            name: "Satin Emerald",
-            cat: "hijau",
-            sub: "emerald",
-            price: "48.000",
-            img: "https://placehold.co/400x500/50c878/fff?text=Emerald",
-            width: "1.5 m",
-            mat: "Satin Roberto",
-            char: "Halus, Berkilau Doff"
-        },
+    // Formatting Uang Rupiah
+    const formatRupiah = (number) => {
+        return new Intl.NumberFormat('id-ID', {
+            maximumSignificantDigits: 3
+        }).format(number);
+    }
 
-        // NETRAL
-        {
-            id: 11,
-            name: "Cotton Broken White",
-            cat: "netral",
-            sub: "bw",
-            price: "30.000",
-            img: "https://placehold.co/400x500/f8f8ff/333?text=BW",
-            width: "1.5 m",
-            mat: "Combed 30s",
-            char: "Standar Distro"
-        },
-        {
-            id: 12,
-            name: "Jetblack Premium",
-            cat: "netral",
-            sub: "black",
-            price: "40.000",
-            img: "https://placehold.co/400x500/000000/fff?text=Jetblack",
-            width: "1.5 m",
-            mat: "Wolfis Jetblack",
-            char: "Hitam Pekat"
-        },
-    ];
-
-    const subCategories = {
-        'merah': [{
-            id: 'maroon',
-            label: 'Maroon',
-            color: '#5c0002'
-        }, {
-            id: 'cabe',
-            label: 'Merah Cabe',
-            color: '#ff0000'
-        }, {
-            id: 'rose',
-            label: 'Rose Pink',
-            color: '#d10046'
-        }],
-        'biru': [{
-            id: 'navy',
-            label: 'Navy',
-            color: '#000080'
-        }, {
-            id: 'royal',
-            label: 'Royal Blue',
-            color: '#002366'
-        }, {
-            id: 'sky',
-            label: 'Sky Blue',
-            color: '#87ceeb'
-        }],
-        'hijau': [{
-            id: 'army',
-            label: 'Army',
-            color: '#4b5320'
-        }, {
-            id: 'sage',
-            label: 'Sage',
-            color: '#9dc183'
-        }, {
-            id: 'emerald',
-            label: 'Emerald',
-            color: '#50c878'
-        }],
-        'netral': [{
-            id: 'bw',
-            label: 'Broken White',
-            color: '#eee'
-        }, {
-            id: 'black',
-            label: 'Hitam',
-            color: '#000'
-        }]
-    };
-
+    // Fungsi Render Grid
     function renderGrid(data) {
         const grid = document.getElementById('catalogGrid');
         const empty = document.getElementById('emptyState');
@@ -739,16 +560,28 @@
         } else {
             empty.classList.add('d-none');
             data.forEach(item => {
+                // Cek apakah gambar URL penuh atau nama file saja
+                let imgUrl = item.gambar_produk.includes('http') ? item.gambar_produk : imageBasePath + item
+                    .gambar_produk;
+
+                // Cek Flash Sale
+                let priceHtml = `Rp ${formatRupiah(item.harga)}`;
+                if (item.is_flash_sale == 1 && item.harga_coret > 0) {
+                    priceHtml =
+                        `<small class="text-danger text-decoration-line-through me-1 fs-6">${formatRupiah(item.harga_coret)}</small> Rp ${formatRupiah(item.harga)}`;
+                }
+
                 const cardHTML = `
                     <div class="col-6 col-lg-3" data-aos="fade-up">
                         <div class="catalog-card">
                             <div class="catalog-img-wrapper">
-                                <img src="${item.img}" class="catalog-img" alt="${item.name}">
+                                <img src="${imgUrl}" class="catalog-img" alt="${item.nama_produk}">
+                                ${item.is_flash_sale == 1 ? '<span class="position-absolute top-0 end-0 m-2 badge bg-danger">PROMO</span>' : ''}
                             </div>
                             <div class="catalog-info">
-                                <span class="product-category text-gold">${item.cat} Series</span>
-                                <h5 class="product-name text-truncate">${item.name}</h5>
-                                <p class="mb-0 fw-bold">Rp ${item.price} <small class="text-muted">/ m</small></p>
+                                <span class="product-category text-gold">${item.nama_bahan}</span>
+                                <h5 class="product-name text-truncate">${item.nama_produk}</h5>
+                                <p class="mb-0 fw-bold">${priceHtml} <small class="text-muted">/ ${item.satuan_jual}</small></p>
                                 <button class="btn-detail-gold" onclick="showDetail(${item.id})">DETAIL</button>
                             </div>
                         </div>
@@ -759,19 +592,36 @@
         }
     }
 
+    // Fungsi Tampilkan Detail (Mapping kolom database ke Modal)
     function showDetail(id) {
-        const product = allProducts.find(p => p.id === id);
-        if (product) {
-            document.getElementById('detailImg').src = product.img;
-            document.getElementById('detailName').innerText = product.name;
-            document.getElementById('detailPriceDisplay').innerText = 'Rp ' + product.price;
-            document.getElementById('detailCat').innerText = product.cat + ' Series';
-            document.getElementById('specWidth').innerText = product.width;
-            document.getElementById('specMaterial').innerText = product.mat;
-            document.getElementById('specChar').innerText = product.char;
+        // Cari produk di array JS (ini cepat karena data sudah di-load)
+        const product = dbProducts.find(p => p.id == id);
 
+        if (product) {
+            let imgUrl = product.gambar_produk.includes('http') ? product.gambar_produk : imageBasePath + product
+                .gambar_produk;
+
+            document.getElementById('detailImg').src = imgUrl;
+            document.getElementById('detailName').innerText = product.nama_produk;
+            document.getElementById('detailPriceDisplay').innerText = 'Rp ' + formatRupiah(product.harga);
+            document.getElementById('detailUnit').innerText = product.satuan_jual;
+            document.getElementById('detailCat').innerText = product.nama_bahan + ' - ' + product.nama_varian;
+
+            // Spesifikasi
+            document.getElementById('specWidth').innerText = product.lebar_kain;
+            document.getElementById('specMaterial').innerText = product.nama_bahan;
+            document.getElementById('specChar').innerText = product.karakteristik || '-';
+            document.getElementById('specConst').innerText = product.konstruksi_kain || '-';
+            document.getElementById('detailDesc').innerText = product.deskripsi_bahan || '';
+
+            // Flash Sale Badge
+            const badge = document.getElementById('detailBadge');
+            if (product.is_flash_sale == 1) badge.classList.remove('d-none');
+            else badge.classList.add('d-none');
+
+            // Link WhatsApp
             const message =
-                `Halo Tamara Textile, saya ingin memesan *${product.name}* (Rp ${product.price}). Apakah stok tersedia?`;
+                `Halo Tamara Textile, saya tertarik dengan produk *${product.nama_produk}*. Apakah stok tersedia?`;
             const waUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(message)}`;
             document.getElementById('waLink').href = waUrl;
 
@@ -780,27 +630,37 @@
         }
     }
 
-    function goToStep2(category) {
+    // Navigasi Filter: Step 1 -> Step 2
+    function goToStep2(groupSlug, groupName) {
         document.getElementById('step1').classList.remove('active');
         document.getElementById('step2').classList.add('active');
-        document.getElementById('subCategoryTitle').innerText = "Varian " + category.charAt(0).toUpperCase() + category
-            .slice(1);
+        document.getElementById('subCategoryTitle').innerText = "Varian " + groupName;
 
         const listContainer = document.getElementById('subCategoryList');
         listContainer.innerHTML = '';
-        const variants = subCategories[category];
+
+        // Ambil varian berdasarkan slug kelompok dari data DB
+        const variants = dbFilters[groupSlug];
+
         if (variants) {
             variants.forEach(variant => {
                 listContainer.innerHTML += `
-                    <div class="filter-item" onclick="applyFilter('${category}', '${variant.id}', '${variant.label}')">
-                        <div class="d-flex align-items-center"><span class="color-dot" style="background: ${variant.color};"></span><span class="fw-bold text-dark">${variant.label}</span></div>
+                    <div class="filter-item" onclick="applyFilter('${groupSlug}', '${variant.id}', '${variant.label}')">
+                        <div class="d-flex align-items-center">
+                            <span class="color-dot" style="background: ${variant.color};"></span>
+                            <span class="fw-bold text-dark">${variant.label}</span>
+                        </div>
                         <i class="fas fa-check text-gold opacity-0"></i>
                     </div>
                 `;
             });
         }
+
+        // Tombol "Lihat Semua"
         listContainer.innerHTML +=
-            `<div class="filter-item mt-3 bg-light justify-content-center" onclick="applyFilter('${category}', 'all', 'Semua ${category.toUpperCase()}')"><span class="fw-bold text-muted small text-uppercase">Lihat Semua ${category}</span></div>`;
+            `<div class="filter-item mt-3 bg-light justify-content-center" onclick="applyFilter('${groupSlug}', 'all', 'Semua ${groupName}')">
+                <span class="fw-bold text-muted small text-uppercase">Lihat Semua ${groupName}</span>
+            </div>`;
     }
 
     function backToStep1() {
@@ -808,28 +668,37 @@
         document.getElementById('step1').classList.add('active');
     }
 
-    function applyFilter(category, subCategory, labelName) {
+    // Logika Filter Utama
+    function applyFilter(groupSlug, variantSlug, labelName) {
         const modalEl = document.getElementById('filterModal');
         const modal = bootstrap.Modal.getInstance(modalEl);
         modal.hide();
-        document.getElementById('productCountTitle').innerText = "Kategori: " + labelName.split('(')[0];
+
+        document.getElementById('productCountTitle').innerText = labelName;
+
         let filteredData;
-        if (subCategory === 'all') {
-            filteredData = allProducts.filter(p => p.cat === category);
+        if (variantSlug === 'all') {
+            // Filter berdasarkan Kelompok Warna (slug_kelompok)
+            filteredData = dbProducts.filter(p => p.slug_kelompok === groupSlug);
         } else {
-            filteredData = allProducts.filter(p => p.cat === category && p.sub === subCategory);
+            // Filter berdasarkan Varian Spesifik (slug_warna)
+            filteredData = dbProducts.filter(p => p.slug_kelompok === groupSlug && p.slug_warna === variantSlug);
         }
+
         renderGrid(filteredData);
+
+        // Reset modal ke tampilan awal setelah delay sedikit
         setTimeout(() => backToStep1(), 500);
     }
 
     function resetFilter() {
-        renderGrid(allProducts);
+        renderGrid(dbProducts);
         document.getElementById('productCountTitle').innerText = "SEMUA KOLEKSI";
     }
 
+    // Init
     document.addEventListener('DOMContentLoaded', () => {
-        renderGrid(allProducts);
+        renderGrid(dbProducts);
     });
 </script>
 
