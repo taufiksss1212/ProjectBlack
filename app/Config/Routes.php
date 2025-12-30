@@ -7,3 +7,4 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Landing\\Home::index');
 $routes->get('katalog', 'Landing\\Katalog::katalog');
+$routes->get('admin', 'Admin\Dashboard::index');
