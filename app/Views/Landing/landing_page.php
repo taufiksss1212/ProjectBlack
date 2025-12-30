@@ -199,190 +199,164 @@
         transform: scale(1.1) rotate(1deg);
     }
 
+
+
+    /* --- FLASH SALE: LUXURY GOLD THEME --- */
     .flash-sale-section {
-        background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1e1e1e);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
-        color: white;
+        /* Background Hitam Elegan (Ganti dari Biru/Teal) */
+        background-color: #050505;
+        background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
         padding: 80px 0;
         position: relative;
         overflow: hidden;
+        border-top: 1px solid rgba(212, 175, 55, 0.2);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
 
-    @keyframes gradientBG {
-        0% {
-            background-position: 0% 50%;
-        }
-
-        50% {
-            background-position: 100% 50%;
-        }
-
-        100% {
-            background-position: 0% 50%;
-        }
+    /* Efek Pattern Halus di Background */
+    .flash-sale-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        pointer-events: none;
     }
 
     .flash-header {
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
+        position: relative;
+        z-index: 2;
     }
 
+    /* Timer Box - Warna Emas */
     .countdown-box {
         display: inline-flex;
-        gap: 10px;
-        margin-top: 20px;
+        gap: 15px;
+        margin-top: 25px;
     }
 
     .time-unit {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(0, 0, 0, 0.6);
+        /* Background gelap transparan */
+        border: 1px solid var(--gold);
+        /* Border Emas */
         padding: 15px 20px;
-        border-radius: 15px;
-        min-width: 80px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        animation: pulse 2s infinite;
+        border-radius: 10px;
+        min-width: 85px;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+        /* Glow Emas Halus */
     }
 
     .time-val {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         font-weight: 700;
         line-height: 1;
         display: block;
+        color: var(--gold);
+        /* Angka jadi Emas */
+        font-family: 'Playfair Display', serif;
     }
 
     .time-label {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        opacity: 0.8;
+        letter-spacing: 2px;
+        color: #aaa;
+        margin-top: 5px;
+        display: block;
     }
 
-    .fs-banner-wrap {
-        width: 100%;
-        overflow: hidden;
-        background: rgba(255, 51, 102, 0.15);
-        padding: 10px 0;
-        white-space: nowrap;
-        margin: 30px 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .fs-ticker {
-        display: inline-block;
-        animation: marquee-reverse 15s linear infinite;
-    }
-
-    .fs-item {
-        display: inline-block;
-        padding: 0 2rem;
-        font-size: 0.9rem;
-        color: #ffb3b3;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    @keyframes marquee-reverse {
-        0% {
-            transform: translateX(-50%);
-        }
-
-        100% {
-            transform: translateX(0);
-        }
-    }
-
+    /* Kartu Produk Flash Sale */
     .flash-card {
-        background: white;
-        border-radius: 15px;
+        background: #fff;
+        border-radius: 12px;
         overflow: hidden;
-        border: none;
-        position: relative;
-        transition: 0.3s;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: 0.4s;
         height: 100%;
-        color: #333;
+        position: relative;
     }
 
     .flash-card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        /* Bayangan Emas saat hover */
+        border-color: var(--gold);
     }
 
+    /* Badge Diskon - Emas */
     .flash-badge {
         position: absolute;
-        top: 10px;
-        left: 10px;
-        background: #ff3366;
-        color: white;
+        top: 12px;
+        left: 12px;
+        background: var(--gold);
+        /* Background Emas */
+        color: #000;
+        /* Teks Hitam */
         padding: 5px 12px;
-        border-radius: 30px;
+        border-radius: 4px;
         font-weight: 700;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         z-index: 2;
-        animation: pulse 1.5s infinite;
+        letter-spacing: 1px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
     .flash-img-wrapper {
-        height: 220px;
+        height: 250px;
         overflow: hidden;
         position: relative;
+        background: #f4f4f4;
     }
 
     .flash-img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: 0.5s;
+        transition: 0.6s ease;
     }
 
     .flash-card:hover .flash-img {
-        transform: scale(1.1);
+        transform: scale(1.08);
     }
 
+    /* Stock Bar - Gradient Emas */
     .stock-bar {
-        height: 8px;
-        background: #eee;
-        border-radius: 4px;
+        height: 6px;
+        background: #f0f0f0;
+        border-radius: 10px;
         margin-top: 15px;
         overflow: hidden;
     }
 
     .stock-fill {
         height: 100%;
-        background: linear-gradient(to right, #ff3366, #ff6b6b);
-        border-radius: 4px;
-    }
-
-    @keyframes shine {
-        100% {
-            left: 125%;
-        }
-    }
-
-    .shine-effect {
+        background: linear-gradient(90deg, #d4af37, #f7ef8a);
+        /* Gradient Emas */
+        border-radius: 10px;
         position: relative;
-        overflow: hidden;
     }
 
-    .shine-effect::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -75%;
-        width: 50%;
-        height: 100%;
-        background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
-        transform: skewX(-25deg);
-        z-index: 2;
-        transition: 0.5s;
+    /* Harga Coret & Harga Asli */
+    .price-strike {
+        font-size: 0.9rem;
+        color: #999;
+        text-decoration: line-through;
     }
 
-    .shine-effect:hover::before {
-        animation: shine 0.75s;
+    .price-final {
+        color: #000;
+        font-weight: 700;
+        font-size: 1.3rem;
+        font-family: 'Playfair Display', serif;
     }
+
+
 
     /* Contact */
     .contact-card {
@@ -549,8 +523,7 @@
     <div class="container position-relative z-2">
         <div class="row justify-content-center align-items-center">
             <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-right">
-                <img src="https://images.unsplash.com/photo-1550614000-4b9519e00664?q=80&w=600&auto=format&fit=crop"
-                    alt="About" class="img-fluid rounded-pill shadow-lg floating-anim"
+                <img src="images/about.jpg" alt="About" class="img-fluid rounded-pill shadow-lg floating-anim"
                     style="max-height: 400px; border: 5px solid white;">
             </div>
             <div class="col-lg-6 offset-lg-1 text-lg-start" data-aos="fade-left">
@@ -609,44 +582,57 @@
     </div>
 </section>
 
-
 <section id="flashsale" class="flash-sale-section">
     <div class="container position-relative" style="z-index: 2;">
-        <div class="flash-header" data-aos="fade-down">
-            <span class="badge bg-danger rounded-pill px-4 py-2 mb-3 fs-6 bounce-hover"><i
-                    class="fas fa-bolt me-2"></i>LIMITED TIME OFFER</span>
-            <h2 class="display-4 fw-bold text-white">Flash Sale Hari Ini</h2>
 
-            <div class="countdown-box">
-                <div class="time-unit"><span id="hours" class="time-val">00</span><span class="time-label">Jam</span>
+        <div class="flash-header" data-aos="fade-down">
+            <span class="d-inline-block px-4 py-2 mb-3 rounded-pill"
+                style="background: rgba(212, 175, 55, 0.15); color: #d4af37; border: 1px solid #d4af37; font-weight: 600; font-size: 0.8rem; letter-spacing: 2px;">
+                <i class="fas fa-bolt me-2"></i>LIMITED TIME OFFER
+            </span>
+
+            <h2 class="display-5 fw-bold text-white mb-0" style="font-family: 'Playfair Display', serif;">
+                Flash Sale <span style="color: var(--gold); font-style: italic;">Exclusive</span>
+            </h2>
+
+            <div class="countdown-box justify-content-center">
+                <div class="time-unit">
+                    <span id="hours" class="time-val">00</span>
+                    <span class="time-label">Jam</span>
                 </div>
-                <div class="time-unit"><span id="minutes" class="time-val">00</span><span
-                        class="time-label">Menit</span></div>
-                <div class="time-unit"><span id="seconds" class="time-val text-danger">00</span><span
-                        class="time-label">Detik</span></div>
+                <div class="time-unit">
+                    <span id="minutes" class="time-val">00</span>
+                    <span class="time-label">Menit</span>
+                </div>
+                <div class="time-unit">
+                    <span id="seconds" class="time-val">00</span>
+                    <span class="time-label">Detik</span>
+                </div>
             </div>
         </div>
 
         <div class="row g-4 justify-content-center">
 
             <?php if (empty($flash_sale)): ?>
-                <div class="text-center text-white-50">Tidak ada promo flash sale saat ini.</div>
+                <div class="text-center text-white-50 py-5">
+                    <i class="far fa-clock fa-3x mb-3 opacity-50"></i>
+                    <p>Tidak ada promo flash sale saat ini.</p>
+                </div>
             <?php else: ?>
                 <?php foreach ($flash_sale as $i => $fs): ?>
                     <?php
                     $imgUrl = strpos($fs['gambar_produk'], 'http') === 0 ? $fs['gambar_produk'] : base_url('uploads/products/' . $fs['gambar_produk']);
 
-                    // Hitung Diskon Otomatis (%)
+                    // Hitung Diskon
                     $persenDiskon = 0;
                     if ($fs['harga_coret'] > 0) {
                         $persenDiskon = round((($fs['harga_coret'] - $fs['harga']) / $fs['harga_coret']) * 100);
                     }
-
-                    // Simulasi Progress Bar Stok (Max 100)
                     $stokPersen = $fs['stok'] > 100 ? 100 : $fs['stok'];
                     ?>
-                    <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="<?= ($i + 1) * 100 ?>">
-                        <div class="card flash-card shine-effect">
+                    <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="<?= ($i + 1) * 100 ?>">
+                        <div class="card flash-card">
+
                             <?php if ($persenDiskon > 0): ?>
                                 <span class="flash-badge"><?= $persenDiskon ?>% OFF</span>
                             <?php endif; ?>
@@ -655,24 +641,30 @@
                                 <img src="<?= $imgUrl ?>" class="flash-img" alt="<?= $fs['nama_produk'] ?>">
                             </div>
 
-                            <div class="card-body p-4">
-                                <h6 class="fw-bold mb-2 text-truncate"><?= $fs['nama_produk'] ?></h6>
+                            <div class="card-body p-3 p-md-4">
+                                <h6 class="fw-bold mb-2 text-truncate text-dark"><?= $fs['nama_produk'] ?></h6>
+
                                 <div class="mb-3">
-                                    <small class="text-muted text-decoration-line-through me-2">
+                                    <span class="price-strike d-block d-md-inline me-2">
                                         Rp<?= number_format($fs['harga_coret'] / 1000, 0) ?>rb
-                                    </small>
-                                    <span class="text-danger fw-bold fs-5">
-                                        <?= number_format($fs['harga'] / 1000, 1) ?>rb
+                                    </span>
+                                    <span class="price-final">
+                                        Rp<?= number_format($fs['harga'] / 1000, 0) ?>rb
                                     </span>
                                 </div>
 
-                                <div class="d-flex justify-content-between small text-muted mb-1">
-                                    <span>Tersedia</span>
-                                    <span><?= number_format($fs['stok']) ?> <?= $fs['satuan_jual'] ?></span>
+                                <div class="d-flex justify-content-between small text-muted mb-1" style="font-size: 0.75rem;">
+                                    <span>Stok Tersedia</span>
+                                    <span class="fw-bold text-dark"><?= number_format($fs['stok']) ?></span>
                                 </div>
-                                <div class="stock-bar mb-2">
+                                <div class="stock-bar">
                                     <div class="stock-fill" style="width: <?= $stokPersen ?>%"></div>
                                 </div>
+
+                                <a href="katalog" class="btn btn-dark w-100 mt-3 btn-sm rounded-1"
+                                    style="font-size: 0.8rem; letter-spacing: 1px;">
+                                    BELI SEKARANG
+                                </a>
                             </div>
                         </div>
                     </div>
