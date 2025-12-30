@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Landing;
+
+use App\Controllers\BaseController;
 
 class Home extends BaseController
 {
@@ -22,6 +24,6 @@ class Home extends BaseController
             ]
         ];
 
-        return view('landing_page', $data);
+        return view('Landing/landing_page', $data);
     }
 }

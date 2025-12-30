@@ -5,5 +5,5 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
-$routes->get('katalog', 'Katalog::katalog');
+$routes->get('/', 'Landing\\Home::index');
+$routes->get('katalog', 'Landing\\Katalog::katalog');
