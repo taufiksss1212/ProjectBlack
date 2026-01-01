@@ -491,6 +491,52 @@
     .object-fit-cover {
         object-fit: cover;
     }
+
+    /* --- TAMBAHAN KHUSUS MOBILE AGAR KARTU LEBIH RAMPING --- */
+    @media (max-width: 576px) {
+
+        /* Kecilkan tinggi gambar agar tidak terlalu lonjong */
+        .flash-img-wrapper {
+            height: 130px !important;
+        }
+
+        /* Kurangi padding/jarak dalam kartu */
+        .flash-card .card-body {
+            padding: 10px !important;
+        }
+
+        /* Kecilkan ukuran Font Judul */
+        .flash-card h6 {
+            font-size: 0.8rem !important;
+            margin-bottom: 4px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Sesuaikan Harga */
+        .price-strike {
+            font-size: 0.7rem !important;
+        }
+
+        .price-final {
+            font-size: 0.95rem !important;
+        }
+
+        /* Sesuaikan Tombol & Badge */
+        .flash-card .btn {
+            font-size: 0.7rem !important;
+            padding: 4px 0 !important;
+            margin-top: 8px !important;
+        }
+
+        .flash-badge {
+            font-size: 0.6rem;
+            padding: 3px 6px;
+            top: 8px;
+            left: 8px;
+        }
+    }
 </style>
 
 <header class="hero-wrapper">
@@ -548,7 +594,7 @@
             <p class="text-muted">Pilihan favorit pelanggan kami bulan ini</p>
         </div>
 
-        <div class="row g-4 justify-content-center">
+        <div class="row g-4 justify-content-lg-center">
 
             <?php if (empty($populer)): ?>
                 <div class="text-center text-muted">Belum ada data produk populer.</div>
@@ -559,7 +605,7 @@
                     $imgUrl = strpos($p['gambar_produk'], 'http') === 0 ? $p['gambar_produk'] : base_url('uploads/products/' . $p['gambar_produk']);
                     $delay = ($i + 1) * 100; // Efek delay animasi bertingkat
                     ?>
-                    <div class="col-6 col-md-4" data-aos="fade-up" data-aos-delay="<?= $delay ?>">
+                    <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="<?= $delay ?>">
                         <div class="product-card">
                             <div class="product-img-wrapper">
                                 <img src="<?= $imgUrl ?>" class="product-img" alt="<?= $p['nama_produk'] ?>">
@@ -611,7 +657,7 @@
             </div>
         </div>
 
-        <div class="row g-4 justify-content-center">
+        <div class="row g-4 justify-content-lg-center">
 
             <?php if (empty($flash_sale)): ?>
                 <div class="text-center text-white-50 py-5">

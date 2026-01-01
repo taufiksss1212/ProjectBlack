@@ -26,7 +26,7 @@ class Home extends BaseController
             ->join('jenis_kain', 'jenis_kain.id = produk_kain.id_jenis_kain')
             ->where('is_flash_sale', 0)
             ->orderBy('id', 'DESC') // Produk terbaru
-            ->limit(3)
+            ->limit(4)
             ->findAll();
 
         $data = [

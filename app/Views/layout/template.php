@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tamara Textile - Premium Fabrics</title>
 
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('images/favicon_io/favicon-32x32.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('images/favicon_io/favicon-16x16.png') ?>">
+
+    <link rel="shortcut icon" href="<?= base_url('images/favicon_io/favicon.ico') ?>">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('images/favicon_io/apple-touch-icon.png') ?>">
+
+    <link rel="manifest" href="<?= base_url('images/favicon_io/site.webmanifest') ?>">
+
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
@@ -200,9 +210,21 @@
                 margin-left: 0 !important;
                 padding: 12px 0 !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-                /* Garis pemisah tipis */
                 font-size: 1rem;
-                /* Font lebih besar biar gampang dipencet */
+                color: white !important;
+                /* PENTING: Paksa putih */
+            }
+
+            /* Ini kuncinya: Override aturan scroll desktop */
+            .navbar.scrolled .nav-link {
+                color: white !important;
+                /* Tetap putih walau navbar discroll */
+            }
+
+            /* Warna saat dipencet/hover tetap Emas */
+            .nav-link:hover,
+            .navbar.scrolled .nav-link:hover {
+                color: var(--gold) !important;
             }
 
             .nav-item:last-child .nav-link {
@@ -286,8 +308,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.3s ease;
         }
+
 
         .loader-logo {
             font-family: 'Playfair Display';
@@ -308,6 +331,36 @@
             50% {
                 opacity: 1;
                 transform: scale(1);
+            }
+        }
+
+        /* --- PERBAIKAN PRELOADER MOBILE --- */
+        /* --- PERBAIKAN PRELOADER MOBILE (VERSI PAS/SEDANG) --- */
+        @media (max-width: 576px) {
+
+            .loader-content {
+                width: 100%;
+                text-align: center;
+                /* Pastikan konten rata tengah */
+                padding: 0 20px;
+            }
+
+            /* Logo: Ukuran 140px (Pas, tidak kekecilan, tidak kegedean) */
+            .loader-logo img {
+                width: 140px !important;
+                /* Sebelumnya 80px (terlalu kecil) */
+                height: auto;
+                margin-bottom: 15px;
+            }
+
+            /* Teks "Loading Premium...": Lebih terbaca */
+            #preloader p {
+                font-size: 0.9rem !important;
+                /* Sebelumnya 0.7rem */
+                letter-spacing: 2px !important;
+                /* Spasi huruf tetap elegan */
+                margin-top: 5px !important;
+                font-weight: 500;
             }
         }
 
@@ -562,6 +615,177 @@
             }
         }
 
+        /* --- PERBAIKAN FOOTER MOBILE (AGAR LEBIH COMPACT) --- */
+        @media (max-width: 991px) {
+
+            /* 1. Mengubah urutan: Brand/Logo pindah ke ATAS */
+            .footer-content .row.gy-4 {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .footer-brand-side {
+                order: -1;
+                /* Pindah ke urutan pertama */
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+                border-top: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                /* Garis pemisah di bawah logo */
+                padding-bottom: 30px;
+                margin-bottom: 30px;
+            }
+
+            /* 2. Merapikan Logo & Tagline di Mobile */
+            .footer-logo img {
+                width: 120px;
+                /* Logo sedikit lebih kecil */
+                margin-bottom: 10px;
+            }
+
+            .footer-tagline {
+                font-size: 0.8rem;
+                margin-bottom: 20px;
+                padding: 0 20px;
+                /* Padding agar teks tidak mepet layar */
+            }
+
+            /* 3. Merapikan Jarak Menu Link */
+            .footer-heading {
+                font-size: 0.75rem;
+                margin-bottom: 10px;
+                color: var(--gold);
+            }
+
+            .footer-list li {
+                margin-bottom: 6px;
+                /* Jarak antar list diperkecil */
+            }
+
+            .footer-list a {
+                font-size: 0.85rem;
+            }
+
+            /* 4. Mengurangi padding footer secara keseluruhan */
+            footer {
+                padding-top: 50px;
+            }
+        }
+
+        /* --- PERBAIKAN FOOTER MOBILE (AGAR LEBIH COMPACT) --- */
+        @media (max-width: 991px) {
+
+            /* 1. Mengubah urutan: Brand/Logo pindah ke ATAS */
+            .footer-content .row.gy-4 {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .footer-brand-side {
+                order: -1;
+                /* Pindah ke urutan pertama */
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+                border-top: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                /* Garis pemisah di bawah logo */
+                padding-bottom: 30px;
+                margin-bottom: 30px;
+            }
+
+            /* 2. Merapikan Logo & Tagline di Mobile */
+            .footer-logo img {
+                width: 120px;
+                /* Logo sedikit lebih kecil */
+                margin-bottom: 10px;
+            }
+
+            .footer-tagline {
+                font-size: 0.8rem;
+                margin-bottom: 20px;
+                padding: 0 20px;
+                /* Padding agar teks tidak mepet layar */
+            }
+
+            /* 3. Merapikan Jarak Menu Link */
+            .footer-heading {
+                font-size: 0.75rem;
+                margin-bottom: 10px;
+                color: var(--gold);
+            }
+
+            .footer-list li {
+                margin-bottom: 6px;
+                /* Jarak antar list diperkecil */
+            }
+
+            .footer-list a {
+                font-size: 0.85rem;
+            }
+
+            /* 4. Mengurangi padding footer secara keseluruhan */
+            footer {
+                padding-top: 50px;
+            }
+        }
+
+        /* --- PERBAIKAN FOOTER MOBILE (AGAR LEBIH COMPACT) --- */
+        @media (max-width: 991px) {
+
+            /* 1. Mengubah urutan: Brand/Logo pindah ke ATAS */
+            .footer-content .row.gy-4 {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .footer-brand-side {
+                order: -1;
+                /* Pindah ke urutan pertama */
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+                border-top: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                /* Garis pemisah di bawah logo */
+                padding-bottom: 30px;
+                margin-bottom: 30px;
+            }
+
+            /* 2. Merapikan Logo & Tagline di Mobile */
+            .footer-logo img {
+                width: 120px;
+                /* Logo sedikit lebih kecil */
+                margin-bottom: 10px;
+            }
+
+            .footer-tagline {
+                font-size: 0.8rem;
+                margin-bottom: 20px;
+                padding: 0 20px;
+                /* Padding agar teks tidak mepet layar */
+            }
+
+            /* 3. Merapikan Jarak Menu Link */
+            .footer-heading {
+                font-size: 0.75rem;
+                margin-bottom: 10px;
+                color: var(--gold);
+            }
+
+            .footer-list li {
+                margin-bottom: 6px;
+                /* Jarak antar list diperkecil */
+            }
+
+            .footer-list a {
+                font-size: 0.85rem;
+            }
+
+            /* 4. Mengurangi padding footer secara keseluruhan */
+            footer {
+                padding-top: 50px;
+            }
+        }
+
         /* wa */
         /* --- FLOATING WHATSAPP BUTTON --- */
         .float-wa {
@@ -704,10 +928,11 @@
                                 <li><a href="katalog">New Arrivals</a></li>
                                 <li><a href="#flashsale">Best Seller</a></li>
                                 <li><a href="#">Fabrics</a></li>
+
                             </ul>
                         </div>
 
-                        <div class="col-sm-4 col-12 mt-4 mt-sm-0">
+                        <div class="col-sm-4 col-6 mt-sm-0">
                             <h6 class="footer-heading">Support</h6>
                             <ul class="footer-list">
                                 <li><a href="#kontak">Contact Us</a></li>
@@ -772,14 +997,24 @@
             }
         });
 
-        // Preloader
-        window.addEventListener("load", function() {
+        // Preloader "Sat-Set" (Cepat)
+        function hidePreloader() {
             const preloader = document.getElementById('preloader');
-            preloader.style.opacity = '0';
-            setTimeout(() => {
-                preloader.style.display = 'none';
-            }, 500);
-        });
+            // Cek agar tidak error kalau preloader sudah hilang duluan
+            if (preloader && preloader.style.display !== 'none') {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 400); // Waktu animasi fade-out (0.4 detik)
+            }
+        }
+
+        // Skenario 1: Jika loading selesai cepat (< 1.2 detik), langsung hilangkan
+        window.addEventListener("load", hidePreloader);
+
+        // Skenario 2: (PENTING) Jika loading lama, PAKSA hilang di detik ke-1.2
+        // Angka 1200 ini adalah 1.2 detik. Bisa dikurangi jadi 1000 (1 detik) kalau mau lebih ngebut.
+        setTimeout(hidePreloader, 1200);
 
         // Scroll Progress
         window.onscroll = function() {
