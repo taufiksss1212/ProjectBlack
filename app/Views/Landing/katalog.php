@@ -17,7 +17,7 @@
         justify-content: center;
         text-align: center;
         position: relative;
-        margin-top: -85px;
+        margin-top: -25px;
     }
 
     .catalog-title {
