@@ -5,19 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'Dashboard - PBD' ?></title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="<?= base_url('css/dashboard.css') ?>">
-</head>
 
-<!DOCTYPE html>
-<html lang="id">
+    <!-- Bootstrap CSS untuk Modal -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?? 'Dashboard - PBD' ?></title>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS (akan override Bootstrap) -->
     <link rel="stylesheet" href="<?= base_url('css/dashboard.css') ?>">
+
+    <style>
+    /* Override Bootstrap container agar tidak mengecil */
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Pastikan main-content tetap fullwidth */
+    .main-content {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .content-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    </style>
 </head>
 
 <body>
@@ -27,8 +44,18 @@
                 <i class="fas fa-shield-alt"></i> PBD
             </div>
             <nav class="menu">
-                <a href="<?= base_url('admin/dashboard') ?>" class="menu-item active">
+                <a href="<?= base_url('admin') ?>" class="menu-item <?= url_is('admin') ? 'active' : '' ?>">
                     <i class="fas fa-th-large"></i> Dashboard
+                </a>
+
+                <a href="<?= base_url('admin/produk') ?>"
+                    class="menu-item <?= url_is('admin/produk*') ? 'active' : '' ?>">
+                    <i class="fas fa-box"></i> Manajemen Produk
+                </a>
+
+                <a href="<?= base_url('admin/kategori') ?>"
+                    class="menu-item <?= url_is('admin/kategori*') ? 'active' : '' ?>">
+                    <i class="fas fa-layer-group"></i> Manajemen Kategori
                 </a>
             </nav>
             <div class="user-profile">
@@ -50,6 +77,9 @@
             </div>
         </main>
     </div>
+
+    <!-- Bootstrap JS Bundle (untuk Modal) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
     // Theme Toggle
@@ -75,14 +105,13 @@
     const menuItems = document.querySelectorAll('.menu-item');
     menuItems.forEach(item => {
         item.addEventListener('click', (e) => {
-            e.preventDefault();
+            //e.preventDefault();
             menuItems.forEach(i => i.classList.remove('active'));
             item.classList.add('active');
         });
     });
     </script>
-</body>
 
-</html>
+</body>
 
 </html>
