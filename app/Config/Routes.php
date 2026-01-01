@@ -17,7 +17,7 @@ $routes->get('logout', 'Auth::logout');
 
 // ==================== ADMIN PANEL ROUTES ====================
 
-$routes->group('Admin', ['filter' => 'auth'], function ($routes) {
+$routes->group('admin', ['filter' => 'auth'], function ($routes) {
 
     // 1. Main Dashboard
     $routes->get('/', 'Admin\Dashboard::index');
@@ -33,9 +33,6 @@ $routes->group('Admin', ['filter' => 'auth'], function ($routes) {
     });
 
 
-    // Manajemen Kategori
-    $routes->group('kategori', function($routes) {
-        $routes->get('/', 'Admin\Kategori::index');
 
     // 3. Manajemen Kategori (Jenis Kain & Varian Warna)
     $routes->group('kategori', function ($routes) {
