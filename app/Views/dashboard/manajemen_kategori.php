@@ -292,11 +292,6 @@ function hapusWarna(id) {
 
 <style>
 /* Styling agar Tab Navigasi terlihat mewah di Dark Mode */
-.nav-pills .nav-link {
-    color: #aaa;
-    background: #2a2a2a;
-    transition: 0.3s;
-}
 
 .nav-pills .nav-link.active {
     background: #d4a574 !important;

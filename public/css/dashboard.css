@@ -1,3 +1,8 @@
+/* ==========================================
+   TAMARA TEXTILE - DASHBOARD CSS
+   Cleaned Version - No Duplicates
+   ========================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -10,445 +15,300 @@ body {
     color: #333;
 }
 
-* {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #1a1a1a;
-        color: #333;
-    }
-
-    .container {
-        display: flex;
-        min-height: 100vh;
-    }
-
-    /* Sidebar */
-    .sidebar {
-        width: 280px;
-        background: #1a1a1a;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .logo {
-        display: flex;
-        align-items: center;
-        color: white;
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 30px;
-        gap: 10px;
-    }
-
-    .logo i {
-        font-size: 32px;
-        color: #d4a574;
-    }
-
-    .menu {
-        flex: 1;
-    }
-
-    .menu-item {
-        display: flex;
-        align-items: center;
-        padding: 15px 20px;
-        color: #999;
-        text-decoration: none;
-        border-radius: 10px;
-        margin-bottom: 8px;
-        transition: all 0.3s;
-        gap: 12px;
-        font-size: 15px;
-    }
-
-    .menu-item i {
-        width: 20px;
-        text-align: center;
-    }
-
-    .menu-item:hover {
-        background: #3a3a3a;
-        color: #fff;
-    }
-
-    .menu-item.active {
-        background: #d4a574;
-        color: #2d2d2d;
-    }
-
-    .user-profile {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 15px;
-        background: #3a3a3a;
-        border-radius: 10px;
-        color: white;
-        margin-top: 20px;
-    }
-
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: #d4a574;
-    }
-
-    .user-info h4 {
-        font-size: 14px;
-        margin-bottom: 2px;
-    }
-
-    .user-info p {
-        font-size: 12px;
-        color: #999;
-    }
-
-    .theme-toggle {
-        display: flex;
-        gap: 10px;
-        margin-top: 15px;
-    }
-
-    .theme-btn {
-        flex: 1;
-        padding: 8px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 12px;
-        transition: all 0.3s;
-    }
-
-    .theme-btn.light {
-        background: #d4a574;
-        color: #2d2d2d;
-    }
-
-    .theme-btn.dark {
-        background: #3a3a3a;
-        color: #999;
-    }
-
-    /* Main Content */
-    .main-content {
-        flex: 1;
-        background: #1a1a1a;
-        padding: 20px;
-        overflow-y: auto;
-    }
-
-    .content-wrapper {
-        background: white;
-        border-radius: 30px;
-        padding: 30px;
-        min-height: calc(100vh - 40px);
-    }
-
-    .header-card {
-        background: linear-gradient(135deg, #d4a574 0%, #c49563 100%);
-        padding: 30px;
-        border-radius: 15px;
-        color: white;
-        margin-bottom: 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .header-text h1 {
-        font-size: 28px;
-        margin-bottom: 8px;
-    }
-
-    .header-text p {
-        opacity: 0.9;
-        font-size: 14px;
-    }
-
-    .header-actions {
-        display: flex;
-        gap: 15px;
-    }
-
-    .btn {
-        padding: 12px 24px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all 0.3s;
-    }
-
-    .btn-primary {
-        background: white;
-        color: #d4a574;
-    }
-
-    .btn-secondary {
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .header-avatar {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        border: 3px solid white;
-    }
-
-    /* Stats */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-
-    .stat-card {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .stat-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-    }
-
-    .stat-icon.teams {
-        background: #fff3e0;
-    }
-
-    .stat-icon.users {
-        background: #fce4ec;
-    }
-
-    .stat-icon.talks {
-        background: #f3e5f5;
-    }
-
-    .stat-icon.meetings {
-        background: #e8f5e9;
-    }
-
-    .stat-info h3 {
-        font-size: 28px;
-        margin-bottom: 4px;
-    }
-
-    .stat-info p {
-        color: #999;
-        font-size: 13px;
-    }
-
-    /* Content Grid */
-    .content-grid {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 20px;
-    }
-
-    .card {
-        background: white;
-        padding: 25px;
-        border-radius: 12px;
-    }
-
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .card-header h2 {
-        font-size: 20px;
-    }
-
-    .view-all {
-        color: #d4a574;
-        text-decoration: none;
-        font-size: 14px;
-    }
-
-    /* Team Chart */
-    .chart-container {
-        display: flex;
-        align-items: center;
-        gap: 30px;
-    }
-
-    .donut-chart {
-        position: relative;
-        width: 200px;
-        height: 200px;
-    }
-
-    .chart-center {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        font-size: 32px;
-        font-weight: bold;
-    }
-
-    .team-list {
-        flex: 1;
-    }
-
-    .team-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 0;
-        border-bottom: 1px solid #f0f0f0;
-    }
-
-    .team-item:last-child {
-        border-bottom: none;
-    }
-
-    .team-name {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .team-color {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-    }
-
-    .team-color.green {
-        background: #4caf50;
-    }
-
-    .team-color.blue {
-        background: #2196f3;
-    }
-
-    .team-color.yellow {
-        background: #ffc107;
-    }
-
-    .team-color.red {
-        background: #f44336;
-    }
-
-    .team-count {
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    /* Activity List */
-    .activity-item {
-        display: flex;
-        gap: 15px;
-        padding: 15px 0;
-        border-bottom: 1px solid #f0f0f0;
-    }
-
-    .activity-item:last-child {
-        border-bottom: none;
-    }
-
-    .activity-date {
-        min-width: 50px;
-        text-align: center;
-    }
-
-    .activity-day {
-        font-size: 24px;
-        font-weight: bold;
-        color: #d4a574;
-    }
-
-    .activity-month {
-        font-size: 12px;
-        color: #999;
-    }
-
-    .activity-details h4 {
-        font-size: 15px;
-        margin-bottom: 4px;
-    }
-
-    .activity-details p {
-        font-size: 13px;
-        color: #999;
-    }
-
-    /* Shoutouts */
-    .shoutout-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px;
-        background: #f9f9f9;
-        border-radius: 8px;
-        margin-bottom: 10px;
-    }
-
-    .shoutout-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: #d4a574;
-        position: relative;
-    }
-
-    .status-dot {
-        width: 10px;
-        height: 10px;
-        background: #4caf50;
-        border-radius: 50%;
-        border: 2px solid white;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-    }
-
-    .shoutout-info h4 {
-        font-size: 14px;
-        margin-bottom: 2px;
-    }
-
-    .shoutout-info p {
-        font-size: 12px;
-        color: #999;
-    }
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ========== SIDEBAR ========== */
+.sidebar {
+    width: 280px;
+    background: #1a1a1a;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    gap: 10px;
+}
+
+.logo i {
+    font-size: 32px;
+    color: #d4a574;
+}
+
+.menu {
+    flex: 1;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: #999;
+    text-decoration: none;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    transition: all 0.3s;
+    gap: 12px;
+    font-size: 15px;
+}
+
+.menu-item i {
+    width: 20px;
+    text-align: center;
+}
+
+.menu-item:hover {
+    background: #3a3a3a;
+    color: #fff;
+}
+
+.menu-item.active {
+    background: #d4a574;
+    color: #2d2d2d;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: #3a3a3a;
+    border-radius: 10px;
+    color: white;
+    margin-top: 20px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #d4a574;
+}
+
+.user-info h4 {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.user-info p {
+    font-size: 12px;
+    color: #999;
+}
+
+/* ========== MAIN CONTENT ========== */
+.main-content {
+    flex: 1;
+    background: #1a1a1a;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.content-wrapper {
+    background: white;
+    border-radius: 30px;
+    padding: 30px;
+    min-height: calc(100vh - 40px);
+}
+
+/* ========== HEADER CARD ========== */
+.header-card {
+    background: linear-gradient(135deg, #d4a574 0%, #c49563 100%);
+    padding: 30px;
+    border-radius: 15px;
+    color: white;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-text h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.header-text p {
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: white;
+    color: #d4a574;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline {
+    background: white;
+    color: #666;
+    border: 2px solid #e0e0e0;
+}
+
+.btn-outline:hover {
+    background: #f5f5f5;
+    border-color: #d4a574;
+    color: #d4a574;
+}
+
+/* ========== STATS GRID ========== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.stat-info h3 {
+    font-size: 28px;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.stat-info p {
+    color: #999;
+    font-size: 13px;
+}
+
+/* ========== CONTENT GRID ========== */
+.content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-header h2 {
+    font-size: 20px;
+}
+
+.view-all {
+    color: #d4a574;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.view-all:hover {
+    text-decoration: underline;
+}
+
+/* ========== ACTIVITY/SHOUTOUT ========== */
+.shoutout-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.shoutout-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #d4a574;
+    position: relative;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background: #4caf50;
+    border-radius: 50%;
+    border: 2px solid white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.shoutout-info h4 {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
 .shoutout-info p {
     font-size: 12px;
     color: #999;
 }
 
-/* ============================================
-   CSS TAMBAHAN UNTUK MANAJEMEN PRODUK
-   Tambahkan ke file dashboard.css Anda
-   ============================================ */
-
-/* Page Header */
+/* ========== PAGE HEADER (untuk halaman lain) ========== */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -468,48 +328,7 @@ body {
     font-size: 15px;
 }
 
-.header-actions {
-    display: flex;
-    gap: 12px;
-}
-
-/* Buttons */
-.btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.3s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-outline {
-    background: white;
-    color: #666;
-    border: 2px solid #e0e0e0;
-}
-
-.btn-outline:hover {
-    background: #f5f5f5;
-    border-color: #d4a574;
-    color: #d4a574;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #d4a574 0%, #c49563 100%);
-    color: white;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4);
-}
-
-/* Search Card */
+/* ========== SEARCH CARD ========== */
 .search-card {
     background: #f8f9fa;
     padding: 25px;
@@ -555,12 +374,13 @@ body {
     background: #c49563;
 }
 
-/* Table Card */
+/* ========== TABLE CARD ========== */
 .table-card {
     background: white;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 20px;
 }
 
 .table-wrapper {
@@ -606,7 +426,7 @@ body {
     border-bottom: none;
 }
 
-/* Product Image */
+/* ========== PRODUCT INFO ========== */
 .product-image {
     width: 60px;
     height: 60px;
@@ -615,7 +435,6 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Product Info */
 .product-name {
     font-weight: 600;
     font-size: 15px;
@@ -628,15 +447,13 @@ body {
     color: #999;
 }
 
-/* Badges */
+/* ========== BADGES ========== */
 .badge {
     display: inline-block;
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 12px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
 }
 
 .badge-info {
@@ -661,7 +478,7 @@ body {
     margin-top: 6px;
 }
 
-/* Price */
+/* ========== PRICE ========== */
 .price-main {
     font-weight: 700;
     font-size: 16px;
@@ -676,7 +493,7 @@ body {
     margin-top: 4px;
 }
 
-/* Stock */
+/* ========== STOCK ========== */
 .stock-normal {
     color: #2e7d32;
     font-weight: 600;
@@ -687,7 +504,7 @@ body {
     font-weight: 700;
 }
 
-/* Action Buttons */
+/* ========== ACTION BUTTONS ========== */
 .action-buttons {
     display: flex;
     gap: 8px;
@@ -705,6 +522,7 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     color: #666;
+    padding: 0;
 }
 
 .btn-icon:hover {
@@ -727,4 +545,54 @@ body {
     border-color: #f44336;
     color: #f44336;
     background: #ffebee;
+}
+
+/* ========== TAB NAVIGATION ========== */
+.nav-pills {
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0;
+    margin-bottom: 20px;
+}
+
+.nav-pills .nav-link {
+    color: #aaa;
+    background: #2a2a2a;
+    transition: 0.3s;
+    border-radius: 10px 10px 0 0;
+    padding: 12px 20px;
+    border: none;
+}
+
+.nav-pills .nav-link.active {
+    background: #d4a574 !important;
+    color: #1a1a1a !important;
+    font-weight: 600;
+}
+
+.nav-pills .nav-link:hover:not(.active) {
+    background: #333;
+    color: #fff;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 992px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        gap: 15px;
+    }
 }

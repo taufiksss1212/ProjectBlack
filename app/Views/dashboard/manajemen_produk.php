@@ -143,7 +143,7 @@
 <!-- ===================== MODAL TAMBAH PRODUK ===================== -->
 <div class="modal fade" id="modalTambah" tabindex="-1" aria-labelledby="modalTambahLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="background: white; color: #333;">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalTambahLabel">
                     <i class="fas fa-plus-circle"></i> Tambah Produk Baru
