@@ -52,6 +52,11 @@
                     class="menu-item <?= url_is('admin/produk*') ? 'active' : '' ?>">
                     <i class="fas fa-box"></i> Manajemen Produk
                 </a>
+
+                <a href="<?= base_url('admin/kategori') ?>"
+                    class="menu-item <?= url_is('admin/kategori*') ? 'active' : '' ?>">
+                    <i class="fas fa-layer-group"></i> Manajemen Kategori
+                </a>
             </nav>
             <div class="user-profile">
                 <div class="user-avatar"></div>
