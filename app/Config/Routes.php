@@ -32,11 +32,6 @@ $routes->group('Admin', ['filter' => 'auth'], function ($routes) {
         $routes->post('update-flash-sale', 'Admin\Produk::updateFlashSale');
     });
 
-
-    // Manajemen Kategori
-    $routes->group('kategori', function($routes) {
-        $routes->get('/', 'Admin\Kategori::index');
-
     // 3. Manajemen Kategori (Jenis Kain & Varian Warna)
     $routes->group('kategori', function ($routes) {
         $routes->get('/', 'Admin\Kategori::index');
