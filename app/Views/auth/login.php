@@ -4,42 +4,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin - Tamara Textile</title>
+    <title>Login Administrator - Tamara Textile</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
         rel="stylesheet">
 
     <style>
     :root {
-        --gold: #d4af37;
-        --dark-bg: #0f2027;
+        --lux-gold: #c5a059;
+        --lux-dark: #1a1a1a;
+        --font-serif: 'Playfair Display', serif;
+        --font-sans: 'Inter', sans-serif;
     }
 
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(rgba(15, 32, 39, 0.8), rgba(15, 32, 39, 0.9)),
-            url('https://images.unsplash.com/photo-1550614000-4b9519e00664?q=80&w=1500&auto=format&fit=crop');
+    body,
+    html {
+        height: 100%;
+        margin: 0;
+        font-family: var(--font-sans);
+        overflow-x: hidden;
+        background-color: #ffffff;
+    }
+
+    .login-container {
+        min-height: 100vh;
+    }
+
+    /* === BAGIAN KANAN: GAMBAR TEXTILE === */
+    .image-section {
+        /* Tambahkan base_url() agar path gambar benar */
+        background-image: url('<?= base_url('images/login.jpg') ?>');
         background-size: cover;
         background-position: center;
-        height: 100vh;
+        position: relative;
+        min-height: 100vh;
+    }
+
+    /* Overlay Emas Gelap agar teks terbaca jika ada, dan memberi kesan mewah */
+    .image-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(45deg, rgba(0, 0, 0, 0.7), rgba(197, 160, 89, 0.3));
+    }
+
+    .image-caption {
+        position: absolute;
+        bottom: 50px;
+        left: 50px;
+        right: 50px;
+        color: white;
+        z-index: 2;
+    }
+
+    /* === BAGIAN KIRI: FORM LOGIN === */
+    .form-section {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0;
+        padding: 40px;
+        background: #ffffff;
+        position: relative;
     }
 
-    .login-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(212, 175, 55, 0.3);
-        border-radius: 20px;
-        padding: 40px;
+    .login-wrapper {
         width: 100%;
-        max-width: 400px;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-        animation: fadeIn 1s ease-out;
+        max-width: 420px;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    /* Logo Brand */
+    .brand-header {
+        margin-bottom: 40px;
+    }
+
+    .logo-text {
+        font-family: var(--font-serif);
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--lux-dark);
+        letter-spacing: -0.5px;
+        margin-bottom: 5px;
+    }
+
+    .logo-sub {
+        font-size: 0.9rem;
+        color: #888;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    /* Custom Input Fields (Sama seperti Profil Edit) */
+    .input-group-custom {
+        position: relative;
+        margin-bottom: 25px;
+    }
+
+    .input-group-custom i {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        transition: 0.3s;
+        z-index: 5;
+    }
+
+    .form-control-lux {
+        width: 100%;
+        padding: 16px 20px 16px 50px;
+        /* Padding kiri besar untuk icon */
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        background: #fcfcfc;
+        font-size: 0.95rem;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+    .form-control-lux:focus {
+        background: #fff;
+        border-color: var(--lux-gold);
+        box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
+        outline: none;
+    }
+
+    .form-control-lux:focus+i {
+        color: var(--lux-gold);
+    }
+
+    .form-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #666;
+        margin-bottom: 8px;
+        display: block;
+        margin-left: 5px;
+    }
+
+    /* Button Login */
+    .btn-gold {
+        background: var(--lux-gold);
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 16px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2);
+        margin-top: 10px;
+    }
+
+    .btn-gold:hover {
+        background: #b08d4b;
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(197, 160, 89, 0.3);
+    }
+
+    /* Alert styling */
+    .alert-custom {
+        border: none;
+        background: #fee2e2;
+        color: #dc2626;
+        font-size: 0.9rem;
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .footer-copy {
+        position: absolute;
+        bottom: 10px;
+        /* Diubah dari 30px ke 10px agar lebih turun */
+        width: 100%;
+        text-align: center;
+        font-size: 0.75rem;
+        color: #aaa;
+        left: 0;
     }
 
     @keyframes fadeIn {
@@ -54,99 +209,87 @@
         }
     }
 
-    .brand-logo {
-        font-family: 'Playfair Display', serif;
-        font-size: 2.5rem;
-        color: var(--gold);
-        text-align: center;
-        margin-bottom: 10px;
-        letter-spacing: 3px;
-    }
+    /* Responsive: Gambar hilang di layar HP */
+    @media (max-width: 991px) {
+        .image-section {
+            display: none;
+        }
 
-    .login-subtitle {
-        color: rgba(255, 255, 255, 0.6);
-        text-align: center;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 30px;
-    }
-
-    .form-label {
-        color: var(--gold);
-        font-size: 0.85rem;
-        font-weight: 600;
-    }
-
-    .form-control {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        padding: 12px 15px;
-        border-radius: 10px;
-    }
-
-    .form-control:focus {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: var(--gold);
-        color: white;
-        box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-    }
-
-    .btn-login {
-        background: var(--gold);
-        color: #000;
-        border: none;
-        padding: 12px;
-        border-radius: 10px;
-        font-weight: 700;
-        width: 100%;
-        margin-top: 20px;
-        transition: 0.3s;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .btn-login:hover {
-        background: #b8962d;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-    }
-
-    .alert {
-        background: rgba(220, 53, 69, 0.2);
-        border: 1px solid rgba(220, 53, 69, 0.4);
-        color: #ff8a8a;
-        font-size: 0.85rem;
-        border-radius: 10px;
+        .form-section {
+            width: 100%;
+            background: #fff;
+        }
     }
     </style>
 </head>
 
 <body>
 
-    <div class="login-card">
-        <div class="brand-logo">TAMARA.</div>
-        <div class="login-subtitle">Administrative Access</div>
+    <div class="container-fluid login-container">
+        <div class="row g-0 h-100">
 
-        <?php if (session()->getFlashdata('error')) : ?>
-        <div class="alert alert-danger">
-            <i class="fas fa-exclamation-circle me-2"></i> <?= session()->getFlashdata('error') ?>
+            <div class="col-lg-6 form-section h-100">
+                <div class="login-wrapper">
+
+                    <div class="brand-header">
+                        <div class="logo-text">TAMARA.</div>
+                        <div class="logo-sub">Premium Textile Management</div>
+                    </div>
+
+                    <div class="mb-5">
+                        <h2 style="font-family: var(--font-serif); font-weight: 700; color: #1a1a1a;">Welcome Back</h2>
+                        <p class="text-muted">Silakan masuk untuk mengelola inventaris.</p>
+                    </div>
+
+                    <?php if (session()->getFlashdata('error')) : ?>
+                    <div class="alert alert-custom">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <div><?= session()->getFlashdata('error') ?></div>
+                    </div>
+                    <?php endif; ?>
+
+                    <form action="<?= base_url('auth/proses_login') ?>" method="post">
+                        <?= csrf_field() ?>
+
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <div class="input-group-custom">
+                                <input type="text" name="username" class="form-control-lux"
+                                    placeholder="Masukkan username admin" required>
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Password</label>
+                            <div class="input-group-custom">
+                                <input type="password" name="password" class="form-control-lux"
+                                    placeholder="Masukkan password" required>
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-gold">
+                            MASUK DASHBOARD <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </form>
+
+                </div>
+
+                <div class="footer-copy">
+                    &copy; <?= date('Y') ?> Tamara Textile. All rights reserved.
+                </div>
+            </div>
+
+            <div class="col-lg-6 image-section h-100 d-none d-lg-block">
+                <div class="image-caption">
+                    <h1 class="display-4 fw-bold" style="font-family: var(--font-serif);">Elegance in Every Thread.</h1>
+                    <p class="lead opacity-75">Kelola koleksi kain premium dengan sistem manajemen yang terintegrasi dan
+                        efisien.</p>
+                </div>
+            </div>
+
         </div>
-        <?php endif; ?>
-
-        <form action="<?= base_url('auth/proses_login') ?>" method="post">
-            <?= csrf_field() ?>
-            <div class="mb-3">
-                <label class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" placeholder="Masukkan username admin" required>
-            </div>
-            <div class="mb-4">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
-            </div>
-            <button type="submit" class="btn-login">Masuk ke Dashboard</button>
-        </form>
     </div>
 
 </body>

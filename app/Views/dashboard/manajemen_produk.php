@@ -1,6 +1,91 @@
 <?= $this->extend('dashboard/layout') ?>
 
 <?= $this->section('content') ?>
+<style>
+/* Wrapper Utama Search */
+.search-group {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50px;
+    /* Padding Kanan 5px agar tombol Search ada jarak sedikit dari pinggir */
+    padding: 4px 5px 4px 20px;
+    transition: 0.3s;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    /* Menjaga kestabilan layout */
+}
+
+.search-group:focus-within {
+    border-color: var(--lux-gold);
+    box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
+}
+
+/* Input Field */
+.search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    flex: 1;
+    /* Input mengisi ruang sisa */
+    min-width: 0;
+    /* Mencegah input mendorong elemen lain */
+    padding: 12px 10px 12px 0;
+    /* Padding kanan ditambah agar teks tidak nempel tombol reset */
+    color: #333;
+    font-size: 0.95rem;
+}
+
+/* Tombol Reset (Perbaikan Jarak) */
+.btn-reset-custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #f1f3f5;
+    color: #868e96;
+    border: none;
+    padding: 0 14px;
+    /* Padding samping */
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    /* PENTING: Jangan gepeng */
+    height: 32px;
+    transition: 0.2s;
+
+    /* === PERBAIKAN UTAMA DISINI === */
+    margin-right: 50px;
+    /* Memberi jarak paksa ke kanan agar tidak tertimpa Search */
+}
+
+.btn-reset-custom:hover {
+    background: #ffc9c9;
+    color: #c92a2a;
+}
+
+/* Tombol Search */
+.search-btn {
+    width: 42px;
+    height: 42px;
+    background: var(--lux-gold);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    /* PENTING: Jangan gepeng */
+
+}
+</style>
 <!-- Page Header -->
 <div class="page-header">
     <div class="page-title">
@@ -34,27 +119,31 @@
 <?php endif; ?>
 
 <!-- Search Card -->
-<div class="search-card">
+<div class="search-card mb-4">
     <form action="<?= base_url('admin/produk') ?>" method="get" id="searchForm">
-        <div class="search-group">
+        <div class="search-group shadow-sm">
+
             <input type="text" name="search" id="searchInput" class="search-input"
                 placeholder="Cari kain, warna, atau jenis..." value="<?= esc($keyword ?? '') ?>" autocomplete="off">
+
+            <?php if (!empty($keyword)): ?>
+            <a href="<?= base_url('admin/produk') ?>" class="btn-reset-custom">
+                <i class="fas fa-times"></i> <span class="d-none d-sm-inline">Reset</span>
+            </a>
+            <?php endif; ?>
+
             <button type="submit" class="search-btn">
                 <i class="fas fa-search"></i>
             </button>
-            <?php if(!empty($keyword)): ?>
-            <a href="<?= base_url('admin/produk') ?>" class="btn btn-sm btn-outline-secondary ms-2">
-                <i class="fas fa-times"></i> Reset
-            </a>
-            <?php endif; ?>
         </div>
     </form>
-    <?php if(!empty($keyword)): ?>
-    <div class="mt-2">
+
+    <?php if (!empty($keyword)): ?>
+    <div class="mt-2 ms-3">
         <small class="text-muted">
-            <i class="fas fa-info-circle"></i>
-            Menampilkan hasil pencarian untuk: <strong>"<?= esc($keyword) ?>"</strong>
-            (<?= count($produk) ?> produk ditemukan)
+            <i class="fas fa-info-circle me-1"></i>
+            Hasil untuk: <strong>"<?= esc($keyword) ?>"</strong>
+            (<?= count($produk) ?> data)
         </small>
     </div>
     <?php endif; ?>
@@ -76,7 +165,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php if(empty($produk)): ?>
+                <?php if (empty($produk)): ?>
                 <tr>
                     <td colspan="7" class="text-center py-4">
                         <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
@@ -162,7 +251,7 @@
                             <label class="form-label">Jenis Bahan <span class="text-danger">*</span></label>
                             <select name="id_jenis_kain" class="form-select" required>
                                 <option value="">Pilih Bahan</option>
-                                <?php foreach($jenis_kain as $j) : ?>
+                                <?php foreach ($jenis_kain as $j) : ?>
                                 <option value="<?= $j['id'] ?>"><?= $j['nama_bahan'] ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -171,7 +260,7 @@
                             <label class="form-label">Varian Warna <span class="text-danger">*</span></label>
                             <select name="id_varian_warna" class="form-select" required>
                                 <option value="">Pilih Warna</option>
-                                <?php foreach($warna as $w) : ?>
+                                <?php foreach ($warna as $w) : ?>
                                 <option value="<?= $w['id'] ?>"><?= $w['nama_varian'] ?> (<?= $w['nama_kelompok'] ?>)
                                 </option>
                                 <?php endforeach; ?>
@@ -276,76 +365,119 @@
 
 <!-- ===================== MODAL EDIT PRODUK ===================== -->
 <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="background: white; color: #333;">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalEditLabel">
-                    <i class="fas fa-edit"></i> Edit Produk
-                </h5>
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+
+            <div class="modal-header px-4 py-3" style="background: white; border-bottom: 2px solid var(--lux-gold);">
+                <div>
+                    <h5 class="modal-title fw-bold text-dark" id="modalEditLabel"
+                        style="font-family: var(--font-serif);">
+                        Edit Informasi Produk
+                    </h5>
+                    <p class="text-muted small mb-0">Perbarui detail stok, harga, atau varian kain.</p>
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <form action="<?= base_url('admin/produk/update') ?>" method="post" enctype="multipart/form-data">
                 <?= csrf_field() ?>
                 <input type="hidden" name="id" id="edit_id">
                 <input type="hidden" name="gambar_lama" id="edit_gambar_lama">
 
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12 mb-3 text-center">
-                            <img id="edit_preview" src="" alt="Current Image" class="img-thumbnail"
-                                style="max-height: 150px;">
+                <div class="modal-body p-4" style="background: #fdfdfd;">
+                    <div class="row g-4">
+
+                        <div class="col-lg-4 text-center">
+                            <div class="p-3 bg-white rounded shadow-sm border">
+                                <label class="form-label small text-muted text-uppercase fw-bold mb-3">Foto Saat
+                                    Ini</label>
+                                <div class="position-relative d-inline-block">
+                                    <img id="edit_preview" src="" alt="Current Image" class="img-fluid rounded"
+                                        style="width: 100%; height: 200px; object-fit: cover; border: 1px solid #eee;">
+                                </div>
+
+                                <div class="mt-3 text-start">
+                                    <label class="form-label small fw-bold text-dark">Ganti Foto (Opsional)</label>
+                                    <input type="file" name="gambar_produk" class="form-control form-control-sm"
+                                        accept="image/*">
+                                    <small class="text-muted d-block mt-1" style="font-size: 10px;">
+                                        Maksimal 2MB (JPG/PNG). Biarkan kosong jika tidak ingin mengubah foto.
+                                    </small>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Nama Produk <span class="text-danger">*</span></label>
-                            <input type="text" name="nama_produk" id="edit_nama_produk" class="form-control" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Jenis Bahan <span class="text-danger">*</span></label>
-                            <select name="id_jenis_kain" id="edit_id_jenis_kain" class="form-select" required>
-                                <?php foreach($jenis_kain as $j) : ?>
-                                <option value="<?= $j['id'] ?>"><?= $j['nama_bahan'] ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Varian Warna <span class="text-danger">*</span></label>
-                            <select name="id_varian_warna" id="edit_id_varian_warna" class="form-select" required>
-                                <?php foreach($warna as $w) : ?>
-                                <option value="<?= $w['id'] ?>"><?= $w['nama_varian'] ?> (<?= $w['nama_kelompok'] ?>)
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Harga Jual (Rp) <span class="text-danger">*</span></label>
-                            <input type="number" name="harga" id="edit_harga" class="form-control" required min="0">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Stok <span class="text-danger">*</span></label>
-                            <input type="number" name="stok" id="edit_stok" class="form-control" required min="0"
-                                step="0.1">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Satuan Jual <span class="text-danger">*</span></label>
-                            <select name="satuan_jual" id="edit_satuan_jual" class="form-select" required>
-                                <option value="meter">Meter</option>
-                                <option value="yard">Yard</option>
-                                <option value="roll">Roll</option>
-                            </select>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <label class="form-label">Ganti Foto Produk (Opsional, Max 2MB)</label>
-                            <input type="file" name="gambar_produk" class="form-control" accept="image/*">
-                            <small class="text-muted">Kosongkan jika tidak ingin mengganti foto</small>
+
+                        <div class="col-lg-8">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label small text-uppercase fw-bold text-muted">Nama
+                                        Produk</label>
+                                    <input type="text" name="nama_produk" id="edit_nama_produk" class="form-control"
+                                        required style="font-weight: 600; color: #333;">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label small text-uppercase fw-bold text-muted">Jenis
+                                        Bahan</label>
+                                    <select name="id_jenis_kain" id="edit_id_jenis_kain" class="form-select" required>
+                                        <?php foreach ($jenis_kain as $j) : ?>
+                                        <option value="<?= $j['id'] ?>"><?= $j['nama_bahan'] ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label small text-uppercase fw-bold text-muted">Varian
+                                        Warna</label>
+                                    <select name="id_varian_warna" id="edit_id_varian_warna" class="form-select"
+                                        required>
+                                        <?php foreach ($warna as $w) : ?>
+                                        <option value="<?= $w['id'] ?>"><?= $w['nama_varian'] ?>
+                                            (<?= $w['nama_kelompok'] ?>)</option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <hr class="my-2 border-light">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label small text-uppercase fw-bold text-muted">Harga Jual
+                                        (Rp)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white text-muted">Rp</span>
+                                        <input type="number" name="harga" id="edit_harga" class="form-control" required
+                                            min="0"
+                                            style="font-family: monospace; font-weight: bold; color: var(--lux-gold);">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label small text-uppercase fw-bold text-muted">Stok</label>
+                                    <input type="number" name="stok" id="edit_stok" class="form-control" required
+                                        min="0" step="0.1">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label small text-uppercase fw-bold text-muted">Satuan</label>
+                                    <select name="satuan_jual" id="edit_satuan_jual" class="form-select" required>
+                                        <option value="meter">Meter</option>
+                                        <option value="yard">Yard</option>
+                                        <option value="roll">Roll</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times"></i> Batal
+
+                <div class="modal-footer border-0 bg-light px-4 py-3">
+                    <button type="button" class="btn btn-light text-muted border" data-bs-dismiss="modal">
+                        Batal
                     </button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Update Produk
+                    <button type="submit" class="btn btn-dark px-4" style="background: var(--lux-gold); border: none;">
+                        <i class="fas fa-save me-2"></i> Simpan Perubahan
                     </button>
                 </div>
             </form>
@@ -389,170 +521,204 @@
 <!-- ===================== MODAL FLASH SALE ===================== -->
 <div class="modal fade" id="modalFlashSale" tabindex="-1" aria-labelledby="modalFlashSaleLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content" style="background: white; color: #333;">
-            <div class="modal-header"
-                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-                <h5 class="modal-title" id="modalFlashSaleLabel">
-                    <i class="fas fa-bolt"></i> Kelola Flash Sale
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Info Box -->
-                <div class="alert alert-info mb-4">
-                    <i class="fas fa-info-circle"></i>
-                    <strong>Tips:</strong> Aktifkan flash sale untuk produk pilihan. Harga coret akan otomatis dihitung
-                    berdasarkan persentase diskon yang Anda tentukan.
+        <div class="modal-content border-0 shadow-lg">
+
+            <div class="modal-header py-4 px-4" style="border-bottom: 2px solid var(--lux-gold); background: #fff;">
+                <div>
+                    <h4 class="modal-title fw-bold" id="modalFlashSaleLabel"
+                        style="font-family: var(--font-serif); color: #1a1a1a;">
+                        Kelola Flash Sale
+                    </h4>
+                    <p class="text-muted small mb-0">Atur diskon spesial untuk produk pilihan Anda.</p>
                 </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-                <!-- Flash Sale Form -->
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <form id="formFlashSale">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-box"></i> Pilih Produk
-                                    </label>
-                                    <select id="produk_flash_sale" class="form-select">
-                                        <option value="">-- Pilih Produk --</option>
-                                        <?php foreach ($produk as $p) : ?>
-                                        <option value="<?= $p['id'] ?>" data-nama="<?= esc($p['nama_produk']) ?>"
-                                            data-harga="<?= $p['harga'] ?>" data-is-flash="<?= $p['is_flash_sale'] ?>"
-                                            data-harga-coret="<?= $p['harga_coret'] ?>">
-                                            <?= $p['nama_produk'] ?> - Rp <?= number_format($p['harga'], 0, ',', '.') ?>
-                                            <?php if($p['is_flash_sale']): ?>
-                                            <span style="color: red;">⚡ (Aktif)</span>
-                                            <?php endif; ?>
-                                        </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-percentage"></i> Diskon (%)
-                                    </label>
-                                    <input type="number" id="diskon_persen" class="form-control"
-                                        placeholder="contoh: 25" min="1" max="90" value="25">
-                                    <small class="text-muted">Max 90%</small>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label class="form-label fw-bold">Status</label>
-                                    <div class="form-check form-switch" style="padding-top: 8px;">
-                                        <input class="form-check-input" type="checkbox" id="status_flash_sale"
-                                            style="width: 50px; height: 25px; cursor: pointer;">
-                                        <label class="form-check-label ms-2" for="status_flash_sale" id="label_status">
-                                            <span class="badge bg-secondary">Nonaktif</span>
-                                        </label>
+            <div class="modal-body p-4" style="background: #fdfdfd;">
+
+                <div class="row g-4">
+                    <div class="col-lg-7">
+                        <div class="card border-0 shadow-sm h-100" style="background: #fff; border-radius: 12px;">
+                            <div class="card-body p-4">
+                                <form id="formFlashSale">
+                                    <div class="mb-4">
+                                        <label class="form-label text-uppercase small fw-bold text-muted">Pilih
+                                            Produk</label>
+                                        <select id="produk_flash_sale" class="form-select form-select-lg"
+                                            style="border-radius: 8px;">
+                                            <option value="">-- Cari Produk --</option>
+                                            <?php foreach ($produk as $p) : ?>
+                                            <option value="<?= $p['id'] ?>" data-nama="<?= esc($p['nama_produk']) ?>"
+                                                data-harga="<?= $p['harga'] ?>"
+                                                data-is-flash="<?= $p['is_flash_sale'] ?>"
+                                                data-harga-coret="<?= $p['harga_coret'] ?>">
+                                                <?= $p['nama_produk'] ?>
+                                                (Rp<?= number_format($p['harga'], 0, ',', '.') ?>)
+                                                <?= $p['is_flash_sale'] ? '⚡' : '' ?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </div>
-                                </div>
-                            </div>
 
-                            <!-- Preview Harga -->
-                            <div id="preview_harga" class="card border-warning mb-3" style="display: none;">
-                                <div class="card-body">
-                                    <h6 class="card-title text-warning">
-                                        <i class="fas fa-calculator"></i> Preview Harga
-                                    </h6>
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <small class="text-muted">Harga Normal:</small>
-                                            <h5 id="preview_harga_normal" class="text-muted">Rp 0</h5>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-uppercase small fw-bold text-muted">Persentase
+                                                Diskon</label>
+                                            <div class="input-group">
+                                                <input type="number" id="diskon_persen" class="form-control"
+                                                    placeholder="0" min="1" max="90" value="25"
+                                                    style="border-right: 0;">
+                                                <span class="input-group-text bg-white text-muted"
+                                                    style="border-left: 0;">%</span>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <small class="text-muted">Diskon:</small>
-                                            <h5 id="preview_diskon" class="text-danger">- Rp 0</h5>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <small class="text-muted">Harga Flash Sale:</small>
-                                            <h5 id="preview_harga_flash" class="text-success">Rp 0</h5>
+                                        <div class="col-md-6 mb-3">
+                                            <label
+                                                class="form-label text-uppercase small fw-bold text-muted">Status</label>
+                                            <div class="d-flex align-items-center p-2 border rounded bg-light">
+                                                <div class="form-check form-switch mb-0">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="status_flash_sale" style="cursor: pointer;">
+                                                    <label class="form-check-label ms-2 fw-bold" for="status_flash_sale"
+                                                        id="label_status">
+                                                        Nonaktif
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div class="d-grid gap-2">
-                                <button type="button" class="btn btn-primary btn-lg" onclick="simpanFlashSale()">
-                                    <i class="fas fa-save"></i> Simpan Perubahan
-                                </button>
+                                    <div class="mt-4 pt-3 border-top">
+                                        <button type="button" class="btn btn-dark w-100 py-2"
+                                            onclick="simpanFlashSale()"
+                                            style="background: var(--lux-gold); border: none;">
+                                            <i class="fas fa-check-circle me-2"></i> Terapkan Perubahan
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div id="preview_harga" class="card border-0 h-100 shadow-sm"
+                            style="display: none; background: #fff8e6; border: 1px dashed #c5a059 !important;">
+                            <div
+                                class="card-body p-4 text-center d-flex flex-column justify-content-center align-items-center">
+                                <h6 class="text-muted text-uppercase letter-spacing-2 mb-3">Preview Harga Jual</h6>
+
+                                <h4 id="preview_harga_normal" class="text-decoration-line-through text-muted mb-1"
+                                    style="font-family: monospace;">
+                                    Rp 0
+                                </h4>
+
+                                <div id="preview_diskon" class="badge bg-danger rounded-pill px-3 py-2 mb-3">
+                                    -0%
+                                </div>
+
+                                <h2 id="preview_harga_flash" class="fw-bold mb-0 display-5"
+                                    style="color: var(--lux-gold); font-family: var(--font-serif);">
+                                    Rp 0
+                                </h2>
+                                <p class="text-muted small mt-2 fst-italic">Harga yang akan tampil di website.</p>
+                            </div>
+                        </div>
+
+                        <div id="preview_placeholder"
+                            class="card border-0 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
+                            <div class="text-center p-4">
+                                <i class="fas fa-hand-pointer fa-2x mb-3 text-secondary"></i>
+                                <p class="mb-0">Pilih produk di sebelah kiri untuk melihat simulasi harga.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <hr>
+                <div class="mt-5">
+                    <h5 class="fw-bold mb-3" style="font-family: var(--font-serif);">
+                        <i class="fas fa-fire text-danger me-2"></i> Sedang Berlangsung
+                    </h5>
 
-                <!-- Tabel Produk Flash Sale Aktif -->
-                <h6 class="mb-3">
-                    <i class="fas fa-fire"></i> Produk Flash Sale Aktif
-                </h6>
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Produk</th>
-                                <th>Harga Normal</th>
-                                <th>Diskon</th>
-                                <th>Harga Flash Sale</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="list_flash_sale_aktif">
-                            <?php 
-$ada_flash = false;
-foreach ($produk as $p) : 
-    if($p['is_flash_sale'] == 1):
-        $ada_flash = true;
-        
-        // JONO: Tambahkan pengaman agar tidak error DivisionByZero
-        $diskon_rp = 0;
-        $diskon_persen = 0;
-        
-        if ($p['harga_coret'] > 0) {
-            $diskon_rp = $p['harga_coret'] - $p['harga'];
-            $diskon_persen = round(($diskon_rp / $p['harga_coret']) * 100);
-        }
-?>
-                            <tr>
-                                <td>
-                                    <strong><?= $p['nama_produk'] ?></strong><br>
-                                    <small class="text-muted"><?= $p['nama_bahan'] ?> - <?= $p['nama_varian'] ?></small>
-                                </td>
-                                <td>
-                                    <del class="text-muted">Rp
-                                        <?= number_format($p['harga_coret'], 0, ',', '.') ?></del>
-                                </td>
-                                <td>
-                                    <span class="badge bg-danger"><?= $diskon_persen ?>%</span>
-                                </td>
-                                <td>
-                                    <strong class="text-success">Rp
-                                        <?= number_format($p['harga'], 0, ',', '.') ?></strong>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-danger"
-                                        onclick="nonaktifkanFlashSale(<?= $p['id'] ?>, '<?= esc($p['nama_produk']) ?>')">
-                                        <i class="fas fa-times"></i> Nonaktifkan
-                                    </button>
-                                </td>
-                            </tr>
-                            <?php 
-                                endif;
-                            endforeach; 
-                            
-                            if(!$ada_flash):
-                            ?>
-                            <tr>
-                                <td colspan="5" class="text-center text-muted py-4">
-                                    <i class="fas fa-inbox fa-2x mb-2"></i><br>
-                                    Belum ada produk flash sale aktif
-                                </td>
-                            </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                    <div class="card border-0 shadow-sm">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead style="background: #f4f4f4;">
+                                    <tr>
+                                        <th class="py-3 px-4 text-secondary text-uppercase small">Produk</th>
+                                        <th class="py-3 px-4 text-secondary text-uppercase small">Harga Awal</th>
+                                        <th class="py-3 px-4 text-secondary text-uppercase small">Diskon</th>
+                                        <th class="py-3 px-4 text-secondary text-uppercase small">Harga Promo</th>
+                                        <th class="py-3 px-4 text-end text-secondary text-uppercase small">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="list_flash_sale_aktif" style="background: white;">
+                                    <?php
+                                    $ada_flash = false;
+                                    foreach ($produk as $p) :
+                                        if ($p['is_flash_sale'] == 1):
+                                            $ada_flash = true;
+                                            $diskon_rp = 0;
+                                            $diskon_persen = 0;
+                                            if ($p['harga_coret'] > 0) {
+                                                $diskon_rp = $p['harga_coret'] - $p['harga'];
+                                                $diskon_persen = round(($diskon_rp / $p['harga_coret']) * 100);
+                                            }
+                                    ?>
+                                    <tr>
+                                        <td class="px-4">
+                                            <span class="fw-bold text-dark d-block"><?= $p['nama_produk'] ?></span>
+                                            <small class="text-muted"><?= $p['nama_bahan'] ?> •
+                                                <?= $p['nama_varian'] ?></small>
+                                        </td>
+                                        <td class="px-4 text-muted text-decoration-line-through">
+                                            Rp <?= number_format($p['harga_coret'], 0, ',', '.') ?>
+                                        </td>
+                                        <td class="px-4">
+                                            <span
+                                                class="badge bg-danger bg-opacity-10 text-danger border border-danger">
+                                                Hemat <?= $diskon_persen ?>%
+                                            </span>
+                                        </td>
+                                        <td class="px-4">
+                                            <strong style="color: var(--lux-gold); font-size: 1.1rem;">
+                                                Rp <?= number_format($p['harga'], 0, ',', '.') ?>
+                                            </strong>
+                                        </td>
+                                        <td class="px-4 text-end">
+                                            <button class="btn btn-sm btn-light text-primary border me-1"
+                                                onclick="loadFlashSaleToForm(<?= $p['id'] ?>)"
+                                                title="Lihat & Edit di Preview">
+                                                <i class="fas fa-pencil-alt"></i> Edit
+                                            </button>
+
+                                            <button class="btn btn-sm btn-light text-danger border"
+                                                onclick="nonaktifkanFlashSale(<?= $p['id'] ?>, '<?= esc($p['nama_produk']) ?>')"
+                                                title="Hentikan Flash Sale">
+                                                <i class="fas fa-stop-circle"></i> Stop
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                        endif;
+                                    endforeach;
+
+                                    if (!$ada_flash):
+                                        ?>
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5 text-muted">
+                                            <div class="opacity-50">
+                                                <i class="fas fa-tag fa-2x mb-2"></i>
+                                                <p class="mb-0">Belum ada promo Flash Sale yang aktif.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -569,6 +735,20 @@ const previewBox = document.getElementById('preview_harga');
 
 let selectedProduk = null;
 
+
+// Helper sederhana untuk toggle placeholder vs preview
+document.getElementById('produk_flash_sale').addEventListener('change', function() {
+    const placeholder = document.getElementById('preview_placeholder');
+    const preview = document.getElementById('preview_harga');
+
+    if (this.value) {
+        placeholder.classList.add('d-none'); // Hide placeholder
+        // Preview akan di-show oleh logic JS Anda yang sudah ada (hitungPreview)
+    } else {
+        placeholder.classList.remove('d-none');
+        preview.style.display = 'none';
+    }
+});
 // Event: Pilih Produk
 produkSelect.addEventListener('change', function() {
     if (this.value) {
@@ -752,7 +932,7 @@ searchInput.addEventListener('input', function() {
 });
 
 // Highlight search results
-<?php if(!empty($keyword)): ?>
+<?php if (!empty($keyword)): ?>
 document.addEventListener('DOMContentLoaded', function() {
     const keyword = "<?= esc($keyword) ?>";
     const tableBody = document.querySelector('.product-table tbody');
@@ -882,6 +1062,35 @@ function hitungPreview() {
     document.getElementById('preview_harga_flash').textContent = 'Rp ' + hargaJual.toLocaleString('id-ID');
 
     previewBox.style.display = 'block';
+}
+
+function loadFlashSaleToForm(idProduk) {
+    // 1. Set nilai dropdown ke ID produk yang diklik
+    produkSelect.value = idProduk;
+
+    // 2. Picu event 'change' secara manual
+    // Ini penting agar logic "hitungPreview" yang sudah ada otomatis jalan
+    const event = new Event('change');
+    produkSelect.dispatchEvent(event);
+
+    // 3. Scroll ke atas (ke area form/preview) agar user sadar data sudah berubah
+    // Menggunakan smooth scroll agar elegan
+    document.querySelector('.modal-body').scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
+    // 4. Fokus ke input diskon agar siap diedit
+    setTimeout(() => {
+        diskonInput.focus();
+        // Efek visual (kedip) pada card preview agar user melihat ke sana
+        const previewCard = document.getElementById('preview_harga');
+        previewCard.style.transition = "transform 0.2s";
+        previewCard.style.transform = "scale(1.02)";
+        setTimeout(() => {
+            previewCard.style.transform = "scale(1)";
+        }, 200);
+    }, 500); // Delay sedikit menunggu scroll selesai
 }
 
 // JONO: Pastikan event listener 'input' sudah terpasang agar jalan saat ngetik

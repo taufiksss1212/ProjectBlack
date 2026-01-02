@@ -11,9 +11,9 @@ $routes->get('/', 'Landing\Home::index');
 $routes->get('katalog', 'Landing\Katalog::katalog');
 
 // ==================== AUTH ROUTES ====================
-$routes->get('login', 'Auth::login');
+$routes->get('auth/login', 'Auth::login');
 $routes->post('auth/proses_login', 'Auth::proses_login');
-$routes->get('logout', 'Auth::logout');
+$routes->get('auth/logout', 'Auth::logout');
 
 // ==================== ADMIN PANEL ROUTES ====================
 
@@ -32,7 +32,8 @@ $routes->group('admin', ['filter' => 'auth'], function ($routes) {
         $routes->post('update-flash-sale', 'Admin\Produk::updateFlashSale');
     });
 
-
+    $routes->get('profil', 'Admin\Profil::index');
+    $routes->post('profil/update', 'Admin\Profil::update');
 
     // 3. Manajemen Kategori (Jenis Kain & Varian Warna)
     $routes->group('kategori', function ($routes) {

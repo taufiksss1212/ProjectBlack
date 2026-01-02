@@ -61,16 +61,14 @@
         }
 
         /* Logo Area */
-        .logo {
-            font-family: var(--font-serif);
-            font-style: italic;
-            letter-spacing: 3px;
-            color: var(--lux-gold) !important;
+        .logo img {
+            width: 180px;
             border-bottom: 1px solid rgba(197, 160, 89, 0.2);
             padding: 25px 20px;
-            font-size: 1.2rem;
+
         }
 
+        /* Profil di Sidebar */
         /* Profil di Sidebar */
         .user-profile-sidebar {
             display: flex;
@@ -80,8 +78,10 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             margin: 20px;
-            /* Margin di dalam sidebar */
             border: 1px solid rgba(255, 255, 255, 0.1);
+            /* Tambahkan ini agar konten tidak melebar keluar */
+            max-width: calc(100% - 40px);
+            overflow: hidden;
         }
 
         .user-avatar-sidebar {
@@ -91,6 +91,13 @@
             border: 2px solid #d4a574;
             object-fit: cover;
             flex-shrink: 0;
+            /* Mencegah foto gepeng */
+        }
+
+        .user-info-sidebar {
+            /* PENTING: min-width: 0 diperlukan agar text-overflow bekerja di dalam flex */
+            min-width: 0;
+            flex: 1;
         }
 
         .user-info-sidebar h4 {
@@ -98,10 +105,17 @@
             font-size: 14px;
             margin: 0;
             font-weight: 600;
+
+            /* Logika pemotongan teks */
             white-space: nowrap;
+            /* Paksa satu baris */
             overflow: hidden;
+            /* Sembunyikan yang lebih */
             text-overflow: ellipsis;
-            max-width: 130px;
+            /* Munculkan titik-titik (...) */
+            width: 100%;
+            /* Paksa ikut lebar induknya */
+            display: block;
         }
 
         .user-info-sidebar p {
@@ -110,11 +124,19 @@
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 1px;
+
+            /* Opsional: Jika role juga panjang, potong juga */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* Menu Navigasi */
         .menu {
             padding: 0 10px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .menu-item {
@@ -186,8 +208,9 @@
 <body>
     <aside class="sidebar">
         <div class="logo">
-            <i class="fas fa-gem me-2"></i> TAMARA
+            <img src="<?= base_url('images/logo.png') ?>" alt="Tamara Textile Logo">
         </div>
+
 
         <div class="user-profile-sidebar">
             <img src="<?= base_url('uploads/profiles/' . session()->get('foto_profil')) ?>" class="user-avatar-sidebar">
@@ -215,7 +238,7 @@
                 <i class="fas fa-user-cog"></i> Pengaturan Profil
             </a>
 
-            <a href="<?= base_url('logout') ?>" class="menu-item text-danger mt-5">
+            <a href="<?= base_url('auth/logout') ?>" class="menu-item text-danger mt-auto mb-4">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
         </nav>

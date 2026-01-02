@@ -2,307 +2,380 @@
 
 <?= $this->section('content') ?>
 
-<div class="profile-page-wrapper">
-    <div class="page-header-profil">
-        <h2 class="title-profil">Account Settings</h2>
-        <p class="subtitle-profil">Kelola informasi personal dan keamanan akun Anda untuk Tamara Textile.</p>
+<style>
+    /* === STYLE KHUSUS HALAMAN PROFIL (CLEAN LUXURY) === */
+    :root {
+        --lux-gold: #c5a059;
+        --lux-gold-light: #f9f3e6;
+    }
+
+    /* 1. Kunci Halaman agar Pas Layar (No Scroll) */
+    .profile-page-container {
+        height: calc(100vh - 40px);
+        /* Kurangi padding atas bawah */
+        overflow: hidden;
+        /* Hilangkan scroll bar halaman */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .page-header-simple {
+        margin-bottom: 20px;
+        flex-shrink: 0;
+        /* Header tidak boleh mengecil */
+    }
+
+    /* 2. Kartu Utama yang Mengisi Sisa Ruang */
+    .profile-card-wrapper {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.03);
+        border: 1px solid rgba(0, 0, 0, 0.02);
+        display: flex;
+        flex: 1;
+        /* Ambil sisa tinggi layar */
+        overflow: hidden;
+        /* Agar konten dalam card bisa di-scroll sendiri jika perlu */
+    }
+
+    /* === BAGIAN KIRI: SIDEBAR PROFIL === */
+    .profile-sidebar {
+        width: 350px;
+        background: linear-gradient(180deg, #fdfbf7 0%, #fff 100%);
+        border-right: 1px solid #f0f0f0;
+        padding: 40px 30px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* Tengahkan vertikal */
+        align-items: center;
+    }
+
+    .avatar-wrapper {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 20px;
+    }
+
+    .avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid white;
+        box-shadow: 0 8px 20px rgba(197, 160, 89, 0.2);
+    }
+
+    .camera-btn {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background: var(--lux-gold);
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid white;
+        cursor: pointer;
+        transition: 0.2s;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .camera-btn:hover {
+        transform: scale(1.1);
+        background: #b08d4b;
+    }
+
+    .profile-name {
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        color: #1a1a1a;
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+
+    .profile-role {
+        display: inline-block;
+        background: var(--lux-gold-light);
+        color: var(--lux-gold);
+        padding: 5px 15px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+    }
+
+    .info-stats {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .stat-item h6 {
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 0;
+    }
+
+    .stat-item span {
+        font-size: 12px;
+        color: #999;
+        text-transform: uppercase;
+    }
+
+    .input-group {
+        border-radius: 8px;
+        overflow: hidden;
+        /* Pastikan sudut anak elemen tidak keluar */
+        border: 1px solid #eee;
+        /* Border pembungkus utama */
+    }
+
+    /* Ikon di sebelah kiri */
+    .input-group-text {
+        background: #f8f9fa;
+        /* Warna abu muda */
+        border: none;
+        /* Hapus border bawaan bootstrap */
+        color: #888;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /* Input field di sebelah kanan */
+    .form-control-custom {
+        border: none !important;
+        /* Hapus border individual */
+        background: #fcfcfc;
+        padding: 12px 15px;
+        /* Hapus border-radius karena sudah diatur di parent .input-group */
+        border-radius: 0 !important;
+        width: 100%;
+        transition: 0.3s;
+        color: #333;
+    }
+
+    /* Efek Fokus (Glow Emas pada Pembungkus) */
+    .input-group:focus-within {
+        border-color: var(--lux-gold);
+        box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
+        background: white;
+    }
+
+    /* Pastikan background input ikut berubah saat fokus */
+    .input-group:focus-within .form-control-custom,
+    .input-group:focus-within .input-group-text {
+        background: white;
+    }
+
+    /* === BAGIAN KANAN: FORM === */
+    .profile-content {
+        flex: 1;
+        padding: 40px 50px;
+        overflow-y: auto;
+        /* Scroll hanya di form jika layar terlalu pendek */
+    }
+
+    .form-group-custom {
+        margin-bottom: 25px;
+    }
+
+    .form-label-custom {
+        font-size: 0.75rem;
+        color: #888;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control-custom {
+        border: 1px solid #eee;
+        background: #fcfcfc;
+        padding: 12px 15px;
+        border-radius: 8px;
+        width: 100%;
+        transition: 0.3s;
+        color: #333;
+    }
+
+    .form-control-custom:focus {
+        background: white;
+        border-color: var(--lux-gold);
+        box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
+        outline: none;
+    }
+
+    .btn-save-custom {
+        background: var(--lux-gold);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: 0.3s;
+    }
+
+    .btn-save-custom:hover {
+        background: #b08d4b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
+    }
+</style>
+
+<div class="profile-page-container">
+
+    <div class="page-header-simple d-flex justify-content-between align-items-center">
+        <div>
+            <h3 class="fw-bold text-dark mb-0" style="font-family: var(--font-serif);">Pengaturan Profil</h3>
+            <p class="text-muted small mb-0">Kelola informasi pribadi akun Anda.</p>
+        </div>
+
+        <?php if (session()->getFlashdata('success')) : ?>
+            <div class="alert alert-success py-2 px-3 mb-0 d-flex align-items-center small shadow-sm border-0">
+                <i class="fas fa-check-circle me-2"></i> <?= session()->getFlashdata('success') ?>
+            </div>
+        <?php endif; ?>
     </div>
 
-    <?php if (session()->getFlashdata('success')) : ?>
-    <div class="alert-custom success animate__animated animate__fadeIn">
-        <i class="fas fa-check-circle me-2"></i> <?= session()->getFlashdata('success') ?>
-    </div>
-    <?php endif; ?>
-
-    <div class="profile-card-container">
-        <form action="<?= base_url('admin/profil/update') ?>" method="post" enctype="multipart/form-data">
+    <div class="profile-card-wrapper">
+        <form action="<?= base_url('admin/profil/update') ?>" method="post" enctype="multipart/form-data"
+            class="d-flex w-100">
             <?= csrf_field() ?>
-            <div class="profile-grid">
-                <div class="profile-sidebar-card">
-                    <div class="avatar-upload-wrapper">
-                        <img id="preview-foto"
-                            src="<?= base_url('uploads/profiles/' . ($user['foto_profil'] ?: 'default_admin.jpg')) ?>"
-                            class="profile-img-large">
 
-                        <label for="foto_profil" class="camera-icon-btn">
-                            <i class="fas fa-camera"></i>
-                        </label>
-                    </div>
+            <div class="profile-sidebar">
+                <div class="avatar-wrapper">
+                    <img id="preview-foto"
+                        src="<?= base_url('uploads/profiles/' . ($user['foto_profil'] ?: 'default_admin.jpg')) ?>"
+                        class="avatar-img">
+
+                    <label for="foto_profil" class="camera-btn" title="Ganti Foto">
+                        <i class="fas fa-camera small"></i>
+                    </label>
                     <input type="file" name="foto_profil" id="foto_profil" class="d-none" accept="image/*"
                         onchange="previewImage(this)">
-
-                    <h4 class="admin-name"><?= $user['nama_lengkap'] ?></h4>
-                    <span class="role-badge"><?= strtoupper($user['role']) ?></span>
-
-                    <div class="member-since">
-                        <small>Member Since</small>
-                        <p><?= date('d F Y', strtotime($user['created_at'] ?? 'now')) ?></p>
-                    </div>
                 </div>
 
-                <div class="profile-form-content">
-                    <div class="form-section">
-                        <h5><i class="fas fa-id-card me-2"></i> Informasi Personal</h5>
-                        <div class="row-input">
-                            <div class="input-box">
-                                <label>NAMA LENGKAP</label>
-                                <input type="text" name="nama_lengkap" class="input-field"
-                                    value="<?= $user['nama_lengkap'] ?>" required>
-                            </div>
-                            <div class="input-box">
-                                <label>USERNAME</label>
-                                <input type="text" name="username" class="input-field" value="<?= $user['username'] ?>"
-                                    required>
-                            </div>
-                        </div>
-                        <div class="input-box">
-                            <label>ALAMAT EMAIL</label>
-                            <input type="email" name="email" class="input-field" value="<?= $user['email'] ?>" required>
-                        </div>
-                        <div class="input-box">
-                            <label>BIO SINGKAT</label>
-                            <textarea name="bio" class="input-field" rows="3"><?= $user['bio'] ?></textarea>
-                        </div>
-                    </div>
+                <div class="text-center">
+                    <h2 class="profile-name"><?= $user['nama_lengkap'] ?></h2>
+                    <span class="profile-role"><?= strtoupper($user['role']) ?> TAMARA</span>
+                </div>
 
-                    <div class="form-section mt-4">
-                        <h5><i class="fas fa-shield-alt me-2"></i> Keamanan Akun</h5>
-                        <div class="input-box">
-                            <label>PASSWORD BARU</label>
-                            <div class="password-wrapper">
-                                <input type="password" name="password" id="password" class="input-field"
-                                    placeholder="Kosongkan jika tidak diganti">
-                                <i class="fas fa-eye eye-toggle" onclick="togglePassword()"></i>
-                            </div>
-                        </div>
+                <div class="info-stats mt-4">
+                    <div class="stat-item">
+                        <h6><?= date('Y') ?></h6>
+                        <span>Member Since</span>
                     </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn-save-profil">SIMPAN PERUBAHAN</button>
-                        <a href="<?= base_url('admin') ?>" class="btn-cancel-profil">Batal</a>
+                    <div class="stat-item">
+                        <h6 class="text-success">Active</h6>
+                        <span>Status Akun</span>
                     </div>
                 </div>
             </div>
+
+            <div class="profile-content">
+                <div class="row">
+                    <div class="col-md-6 form-group-custom">
+                        <label class="form-label-custom">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-at small"></i></span>
+                            <input type="text" name="username" class="form-control-custom"
+                                value="<?= $user['username'] ?>" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 form-group-custom">
+                        <label class="form-label-custom">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope small"></i></span>
+                            <input type="email" name="email" class="form-control-custom" value="<?= $user['email'] ?>"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="col-12 form-group-custom">
+                        <label class="form-label-custom">Nama Lengkap</label>
+                        <input type="text" name="nama_lengkap" class="form-control-custom"
+                            value="<?= $user['nama_lengkap'] ?>" required>
+                    </div>
+
+                    <div class="col-12 form-group-custom">
+                        <label class="form-label-custom">Bio Singkat</label>
+                        <textarea name="bio" class="form-control-custom" rows="2"
+                            placeholder="Tulis sedikit tentang Anda..."><?= $user['bio'] ?></textarea>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <hr class="text-muted opacity-25">
+                        <label class="form-label-custom text-danger mt-3"><i class="fas fa-shield-alt me-1"></i> Ganti
+                            Password (Opsional)</label>
+                    </div>
+
+                    <div class="col-md-12 form-group-custom">
+                        <div class="position-relative">
+                            <input type="password" name="password" id="password" class="form-control-custom"
+                                placeholder="Kosongkan jika tidak ingin mengubah password">
+                            <button type="button" class="btn position-absolute end-0 top-0 mt-1 me-1 text-muted"
+                                onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <small class="text-muted d-block mt-1" style="font-size: 11px;">Minimal 6 karakter kombinasi
+                            huruf dan angka untuk keamanan.</small>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-3 mt-4">
+                    <a href="<?= base_url('admin') ?>" class="btn btn-light text-muted px-4"
+                        style="font-weight: 500;">Batal</a>
+                    <button type="submit" class="btn-save-custom">
+                        <i class="fas fa-save me-2"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </div>
+
         </form>
     </div>
 </div>
 
-<style>
-/* JONO: CSS KHUSUS AGAR TIDAK NABRAK BACKGROUND PUTIH LAYOUT */
-.profile-page-wrapper {
-    position: relative;
-    padding: 20px;
-    background: #1a1a1a !important;
-    /* Paksa background gelap */
-    min-height: 100vh;
-    border-radius: 20px;
-    z-index: 10;
-}
-
-/* Header Profil */
-.page-header-profil {
-    margin-bottom: 30px;
-}
-
-.title-profil {
-    color: #ffffff !important;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.subtitle-profil {
-    color: #999 !important;
-    font-size: 14px;
-}
-
-/* Container Utama */
-.profile-card-container {
-    background: rgba(40, 40, 40, 0.95) !important;
-    border-radius: 15px;
-    border: 1px solid #d4a574;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.profile-grid {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-/* Sidebar Profil */
-.profile-sidebar-card {
-    flex: 1;
-    min-width: 300px;
-    padding: 40px;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.2);
-    border-right: 1px solid rgba(212, 165, 116, 0.2);
-}
-
-.avatar-upload-wrapper {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 20px;
-}
-
-.profile-img-large {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #d4a574;
-    background: #222;
-}
-
-.camera-icon-btn {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background: #d4a574;
-    color: #1a1a1a;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border: 3px solid #1a1a1a;
-}
-
-.admin-name {
-    color: #fff !important;
-    margin-top: 15px;
-}
-
-.role-badge {
-    color: #d4a574;
-    border: 1px solid #d4a574;
-    padding: 2px 15px;
-    border-radius: 20px;
-    font-size: 12px;
-}
-
-.member-since {
-    margin-top: 30px;
-    color: #666;
-}
-
-.member-since p {
-    color: #fff;
-    font-size: 14px;
-}
-
-/* Konten Form */
-.profile-form-content {
-    flex: 2;
-    min-width: 400px;
-    padding: 40px;
-}
-
-.form-section h5 {
-    color: #d4a574 !important;
-    margin-bottom: 20px;
-    font-weight: 600;
-}
-
-.row-input {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.input-box {
-    flex: 1;
-    margin-bottom: 20px;
-}
-
-.input-box label {
-    display: block;
-    color: #999;
-    font-size: 11px;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-
-.input-field {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    padding: 12px;
-    border-radius: 8px;
-    color: #fff !important;
-    outline: none;
-}
-
-.input-field:focus {
-    border-color: #d4a574 !important;
-    background: rgba(255, 255, 255, 0.1) !important;
-}
-
-.password-wrapper {
-    position: relative;
-}
-
-.eye-toggle {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    color: #666;
-    cursor: pointer;
-}
-
-/* Buttons */
-.form-actions {
-    display: flex;
-    gap: 15px;
-    margin-top: 30px;
-}
-
-.btn-save-profil {
-    background: #d4a574;
-    color: #1a1a1a;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 8px;
-    font-weight: 700;
-    cursor: pointer;
-    flex: 1;
-}
-
-.btn-cancel-profil {
-    text-decoration: none;
-    color: #999;
-    padding: 12px 20px;
-    border: 1px solid #333;
-    border-radius: 8px;
-}
-
-.alert-custom {
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    background: rgba(46, 204, 113, 0.2);
-    color: #2ecc71;
-    border: 1px solid #2ecc71;
-}
-</style>
-
 <script>
-function previewImage(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('preview-foto').src = e.target.result;
+    // Preview Gambar saat upload
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('preview-foto').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
         }
-        reader.readAsDataURL(input.files[0]);
     }
-}
 
-function togglePassword() {
-    const passInput = document.getElementById('password');
-    passInput.type = passInput.type === 'password' ? 'text' : 'password';
-}
+    // Toggle Password Visibility
+    function togglePassword() {
+        const passInput = document.getElementById('password');
+        const icon = event.currentTarget.querySelector('i');
+
+        if (passInput.type === 'password') {
+            passInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
 </script>
 
 <?= $this->endSection() ?>
