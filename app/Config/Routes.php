@@ -35,6 +35,7 @@ $routes->group('admin', ['filter' => 'auth'], function ($routes) {
     $routes->get('profil', 'Admin\Profil::index');
     $routes->post('profil/update', 'Admin\Profil::update');
 
+
     // 3. Manajemen Kategori (Jenis Kain & Varian Warna)
     $routes->group('kategori', function ($routes) {
         $routes->get('/', 'Admin\Kategori::index');
