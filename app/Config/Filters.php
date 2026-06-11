@@ -74,7 +74,16 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             // 'honeypot',
-            // 'csrf',
+            'csrf' => [
+                'except' => [
+                    'webhook/komerce',
+                    'cart/add',
+                    'cart/update',
+                    'cart/remove_ajax',
+                    'checkout/get_cost',
+
+                ]
+            ],
             // 'invalidchars',
         ],
         'after' => [
@@ -108,6 +117,6 @@ class Filters extends BaseFilters
      * @var array<string, array<string, list<string>>>
      */
     public array $filters = [
-    'auth' => ['before' => ['admin', 'admin/*']], // Semua URL diawali 'admin' akan dijaga ketat
-                            ];
+        'auth' => ['before' => ['admin', 'admin/*']], // Semua URL diawali 'admin' akan dijaga ketat
+    ];
 }

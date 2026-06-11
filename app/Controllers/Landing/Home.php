@@ -12,20 +12,18 @@ class Home extends BaseController
         $produkModel = new ProdukModel();
 
         // 1. Ambil Data Flash Sale (Max 4 item)
-        // Syarat: is_flash_sale = 1
         $flashSale = $produkModel->select('produk_kain.*, jenis_kain.nama_bahan')
             ->join('jenis_kain', 'jenis_kain.id = produk_kain.id_jenis_kain')
             ->where('is_flash_sale', 1)
-            ->orderBy('rand()') // Acak biar fresh tiap refresh (opsional)
+            ->orderBy('id', 'DESC') // OPTIMASI: Ganti rand() dengan id DESC (Terbaru)
             ->limit(4)
             ->findAll();
 
-        // 2. Ambil Data Populer (Max 3 item)
-        // Kita ambil 3 produk terbaru yang BUKAN flash sale (biar beda isinya)
+        // 2. Ambil Data Populer (Max 4 item)
         $populer = $produkModel->select('produk_kain.*, jenis_kain.nama_bahan')
             ->join('jenis_kain', 'jenis_kain.id = produk_kain.id_jenis_kain')
             ->where('is_flash_sale', 0)
-            ->orderBy('id', 'DESC') // Produk terbaru
+            ->orderBy('id', 'DESC') // OPTIMASI: Ganti rand() dengan id DESC
             ->limit(4)
             ->findAll();
 

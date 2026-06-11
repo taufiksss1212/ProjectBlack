@@ -225,6 +225,11 @@
                 <i class="fas fa-th-large"></i> Dashboard
             </a>
 
+            <a href="<?= base_url('admin/pesanan') ?>"
+                class="menu-item <?= url_is('admin/pesanan*') ? 'active' : '' ?>">
+                <i class="fas fa-shopping-cart"></i> Manajemen Pesanan
+            </a>
+
             <a href="<?= base_url('admin/produk') ?>" class="menu-item <?= url_is('admin/produk*') ? 'active' : '' ?>">
                 <i class="fas fa-box"></i> Manajemen Produk
             </a>

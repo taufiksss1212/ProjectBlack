@@ -1,0 +1,382 @@
+.catalog-header {
+  height: 60vh;
+  background:
+    linear-gradient(to bottom, rgba(15, 32, 39, 0.8), rgba(15, 32, 39, 0.9)),
+    url("../images/katalog-hero.avif");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  margin-top: -25px;
+}
+.catalog-title {
+  font-family: "Playfair Display", serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+.filter-bar-container {
+  margin-top: -50px;
+  position: relative;
+  z-index: 10;
+  margin-bottom: 50px;
+}
+.filter-bar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 20px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* --- PRODUCT CARD CATALOG --- */
+.catalog-card {
+  background: white;
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  position: relative;
+}
+.catalog-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(212, 175, 55, 0.15);
+}
+.catalog-img-wrapper {
+  height: 350px;
+  overflow: hidden;
+  position: relative;
+}
+.catalog-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.6s ease;
+}
+.catalog-card:hover .catalog-img {
+  transform: scale(1.1);
+}
+.catalog-info {
+  padding: 20px;
+  text-align: center;
+  background: white;
+  position: relative;
+}
+.product-category {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #999;
+  margin-bottom: 5px;
+  display: block;
+}
+.product-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+.btn-detail-gold {
+  display: inline-block;
+  width: 100%;
+  padding: 12px 0;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: transparent;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  font-weight: 600;
+  transition: 0.3s;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.btn-detail-gold:hover {
+  background: var(--gold);
+  color: white;
+}
+
+/* --- MODAL --- */
+.modal-content-luxury {
+  border-radius: 20px;
+  border: none;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+.modal-header-luxury {
+  background: #0f2027;
+  color: white;
+  border-bottom: 2px solid var(--gold);
+  padding: 15px 25px;
+  position: relative;
+  z-index: 2;
+}
+.detail-left-col {
+  background: #f0f0f0;
+  min-height: 500px;
+  position: relative;
+  overflow: hidden;
+}
+.detail-img-full {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.detail-right-col {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+}
+.badge-category {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #999;
+  margin-bottom: 10px;
+  display: block;
+  font-weight: 600;
+}
+.detail-title-large {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+.detail-price-large {
+  font-size: 2rem;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.detail-price-large span {
+  font-size: 1rem;
+  color: #aaa;
+  font-weight: 400;
+}
+.spec-grid-clean {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin: 25px 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 20px 0;
+}
+.spec-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.spec-box i {
+  color: var(--gold);
+  font-size: 1.2rem;
+  margin-top: 3px;
+}
+.spec-text h6 {
+  font-size: 0.7rem;
+  color: #aaa;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  letter-spacing: 1px;
+}
+.spec-text p {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+.btn-wa-large {
+  background: #25d366;
+  color: white;
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: 0.3s;
+}
+.btn-wa-large:hover {
+  background: #128c7e;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
+}
+
+/* Modal Filter */
+.filter-item {
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: 0.2s;
+}
+.filter-item:hover {
+  border-color: var(--gold);
+  background: #fffdf5;
+  color: var(--gold);
+}
+.color-circle {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 15px;
+  border: 2px solid #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.step-view {
+  display: none;
+  animation: slideIn 0.3s ease;
+}
+.step-view.active {
+  display: block;
+}
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Catalog Mobile */
+@media (max-width: 991px) {
+  .catalog-title {
+    font-size: 2.5rem;
+  }
+  .filter-bar {
+    flex-direction: column;
+    text-align: center;
+  }
+  .catalog-img-wrapper {
+    height: 200px;
+  }
+  .btn-detail-gold {
+    padding: 8px 0;
+    font-size: 0.7rem;
+  }
+  .product-name {
+    font-size: 1rem;
+  }
+  .detail-left-col {
+    min-height: 300px;
+    height: 300px;
+  }
+  .detail-right-col {
+    padding: 25px;
+  }
+  .detail-title-large {
+    font-size: 1.8rem;
+  }
+  .detail-price-large {
+    font-size: 1.5rem;
+  }
+  .spec-grid-clean {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
+/* --- PAGINATION LUXURY STYLE --- */
+
+/* 1. Container Pagination di Tengah */
+.pagination {
+  justify-content: center;
+  margin-top: 60px;
+  gap: 10px; /* Jarak antar bulatan */
+}
+
+/* 2. Styling Tombol (Link) Default */
+.page-item .page-link {
+  border: 1px solid #e0e0e0;
+  color: #0f2027; /* Dark Blue */
+  width: 45px; /* Lebar tombol */
+  height: 45px; /* Tinggi tombol */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important; /* Membuat bulat sempurna */
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background-color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-decoration: none;
+}
+
+/* 3. Efek Hover (Saat mouse diarahkan) */
+.page-item .page-link:hover {
+  color: var(--gold); /* Emas */
+  border-color: var(--gold);
+  background-color: #fff;
+  transform: translateY(-3px); /* Tombol naik sedikit */
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25); /* Bayangan emas */
+  z-index: 2;
+}
+
+/* 4. State Active (Halaman yang sedang dibuka) */
+.page-item.active .page-link {
+  background-color: var(--gold);
+  border-color: var(--gold);
+  color: #fff; /* Teks Putih */
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+  transform: scale(1.1); /* Sedikit lebih besar */
+}
+
+/* 5. State Disabled (Tombol prev/next mati) */
+.page-item.disabled .page-link {
+  background-color: #f9f9f9;
+  border-color: #eee;
+  color: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* 6. Hilangkan outline biru bawaan browser saat diklik */
+.page-link:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+/* 7. Icon Panah (Previous/Next) */
+.page-item:first-child .page-link,
+.page-item:last-child .page-link {
+  border-radius: 50% !important; /* Pastikan prev/next tetap bulat */
+  font-size: 1.1rem;
+}

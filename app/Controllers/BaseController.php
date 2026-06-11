@@ -32,14 +32,22 @@ abstract class BaseController extends Controller
      */
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
-        // Load here all helpers you want to be available in your controllers that extend BaseController.
-        // Caution: Do not put the this below the parent::initController() call below.
-        // $this->helpers = ['form', 'url'];
-
         // Caution: Do not edit this line.
         parent::initController($request, $response, $logger);
 
-        // Preload any models, libraries, etc, here.
-        // $this->session = service('session');
+        // 1. Load Session Service
+        $session = \Config\Services::session();
+        $language = \Config\Services::language();
+
+        // 2. Cek apakah user sudah punya preferensi bahasa di session?
+        $lang = $session->get('lang');
+
+        // 3. Jika ada, set bahasa aplikasi. Jika tidak, default 'id'
+        if ($lang) {
+            $language->setLocale($lang);
+        } else {
+            // Default bahasa jika belum memilih
+            $language->setLocale('id');
+        }
     }
 }

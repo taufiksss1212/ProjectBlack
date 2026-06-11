@@ -17,6 +17,7 @@ class ProdukModel extends Model
         'karakteristik',
         'harga',
         'satuan_jual',
+        'berat', // <--- TAMBAHKAN INI
         'stok',
         'gambar_produk',
         'is_flash_sale',
