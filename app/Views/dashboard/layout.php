@@ -239,6 +239,10 @@
                 <i class="fas fa-layer-group"></i> Manajemen Kategori
             </a>
 
+            <a href="<?= base_url('admin/laporan') ?>" class="menu-item <?= url_is('admin/laporan*') ? 'active' : '' ?>">
+                <i class="fas fa-file-invoice-dollar"></i> Pelaporan
+            </a>
+
             <a href="<?= base_url('admin/profil') ?>" class="menu-item <?= url_is('admin/profil*') ? 'active' : '' ?>">
                 <i class="fas fa-user-cog"></i> Pengaturan Profil
             </a>
