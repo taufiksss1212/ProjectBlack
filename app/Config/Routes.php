@@ -76,7 +76,6 @@ $routes->group('admin', ['filter' => 'auth'], function ($routes) {
         $routes->post('update', 'Admin\Produk::update');
         $routes->post('hapus', 'Admin\Produk::hapus');
         $routes->post('update-flash-sale', 'Admin\Produk::updateFlashSale');
-        
     });
 
     $routes->get('profil', 'Admin\Profil::index');
@@ -84,6 +83,11 @@ $routes->group('admin', ['filter' => 'auth'], function ($routes) {
     $routes->get('laporan', 'Admin\Laporan::laporan');
     $routes->get('laporan/search-produk', 'Admin\Laporan::searchProduk');
     $routes->post('laporan/update-stok-bulk', 'Admin\Laporan::updateStokBulk');
+
+    $routes->get('laporan/get-distribusi', 'Admin\Laporan::getDistribusi');
+    $routes->get('laporan/get-keuangan', 'Admin\Laporan::getKeuangan');
+
+    $routes->get('laporan/cetak', 'Admin\Laporan::cetak');
 
     // 3. Manajemen Kategori (Jenis Kain & Varian Warna)
     $routes->group('kategori', function ($routes) {

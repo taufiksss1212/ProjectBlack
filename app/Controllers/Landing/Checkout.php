@@ -128,7 +128,12 @@ class Checkout extends BaseController
             $itemsAPI[] = ['name' => 'Ongkos Kirim (' . strtoupper($kurir) . ')', 'quantity' => 1, 'price' => (int) $ongkir];
         }
 
+        // ==========================================
+        // TRANSAKSI DATABASE (SIMPAN ORDER & POTONG STOK)
+        // ==========================================
         $db->transStart();
+
+        // 1. Simpan ke tabel orders
         $db->table('orders')->insert([
             'order_id'       => $order_id,
             'user_id'        => $user_id,
@@ -145,12 +150,30 @@ class Checkout extends BaseController
             'status_pesanan' => 'pending'
         ]);
 
+        // 2. Simpan ke tabel order_details SEKALIGUS potong stok di produk_kain
         $detailData = [];
         foreach ($cart as $item) {
-            $detailData[] = ['order_id' => $order_id, 'id_produk' => $item['id_produk'] ?? $item['id'], 'harga_satuan' => $item['harga'], 'qty' => $item['qty'], 'subtotal' => $item['subtotal']];
+            $id_produk = $item['id_produk'] ?? $item['id'];
+            $qty_dibeli = $item['qty'];
+
+            $detailData[] = [
+                'order_id'     => $order_id,
+                'id_produk'    => $id_produk,
+                'harga_satuan' => $item['harga'],
+                'qty'          => $qty_dibeli,
+                'subtotal'     => $item['subtotal']
+            ];
+
+            // LOGIKA POTONG STOK OTOMATIS
+            $db->table('produk_kain')
+                ->where('id', $id_produk)
+                ->set('stok', 'stok - ' . $qty_dibeli, false) // Mengurangi stok yang ada dengan qty yang dibeli
+                ->update();
         }
         $db->table('order_details')->insertBatch($detailData);
+
         $db->transComplete();
+        // ==========================================
 
         if ($db->transStatus() === false) return redirect()->back()->with('error', 'Gagal memproses pesanan.');
 

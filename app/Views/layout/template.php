@@ -446,7 +446,7 @@
             </div>
             <div class="row g-2">
                 <div class="col-12">
-                    <a href="<?= site_url('checkout') ?>"
+                    <a href="<?= site_url('checkout') ?>" id="btnCheckoutOffcanvas"
                         class="btn w-100 fw-bold py-2 shadow-sm <?= empty($cart) ? 'disabled' : '' ?>"
                         style="background: var(--gold); color: white; border-radius: 8px;">
                         LANJUT CHECKOUT <i class="fas fa-arrow-right ms-1"></i>
