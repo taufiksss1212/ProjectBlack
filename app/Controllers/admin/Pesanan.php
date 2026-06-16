@@ -103,35 +103,44 @@ class Pesanan extends BaseController
 
     // Aksi: Admin Memasukkan Nomor Resi
     public function updateResi()
-    {
-        $order_id = $this->request->getPost('order_id');
-        $no_resi  = $this->request->getPost('no_resi');
+{
+    $order_id = $this->request->getPost('order_id');
+    $no_resi  = $this->request->getPost('no_resi');
 
-        $this->orderModel->update($order_id, [
-            'no_resi'        => $no_resi,
-            'status_pesanan' => 'shipped'
-        ]);
+    $this->orderModel->update($order_id, [
+        'no_resi'        => $no_resi,
+        'status_pesanan' => 'shipped'
+    ]);
 
-        return redirect()->back()->with('success', 'Nomor Resi berhasil disimpan! Status pesanan berubah menjadi DIKIRIM.');
-    }
+    // SOLUSI: Redirect langsung ke URL detail pesanan secara absolut
+    return redirect()->to(base_url('admin/pesanan/detail/' . $order_id))
+                    ->with('success', '✓ Nomor Resi berhasil disimpan! Status pesanan berubah menjadi DIKIRIM.');
+}
 
     // Aksi: Admin Menandai Barang Telah Sampai
-    public function selesai($order_id)
-    {
-        $this->orderModel->update($order_id, [
-            'status_pesanan' => 'completed'
-        ]);
+    // Aksi: Admin Menandai Barang Telah Sampai
+public function selesai($order_id)
+{
+    // 1. Update status di database
+    $this->orderModel->update($order_id, [
+        'status_pesanan' => 'completed'
+    ]);
 
-        return redirect()->back()->with('success', 'Pesanan telah ditandai sebagai SELESAI.');
-    }
+    // 2. Redirect menggunakan site_url() ke halaman detail pesanan admin yang tepat
+    return redirect()->to(site_url('admin/pesanan/detail/' . $order_id))
+                    ->with('success', '✓ Pesanan telah berhasil ditandai sebagai SELESAI.');
+}
 
-    // Aksi: Admin Mematalkan Pesanan
-    public function batal($order_id)
-    {
-        $this->orderModel->update($order_id, [
-            'status_pesanan' => 'canceled'
-        ]);
+    // Aksi: Admin Membatalkan Pesanan
+public function batal($order_id)
+{
+    // 1. Update status menjadi canceled
+    $this->orderModel->update($order_id, [
+        'status_pesanan' => 'canceled'
+    ]);
 
-        return redirect()->back()->with('success', 'Pesanan berhasil DIBATALKAN.');
-    }
+    // 2. Redirect kembali ke halaman detail agar admin tahu status sudah berubah
+    return redirect()->to(site_url('admin/pesanan/detail/' . $order_id))
+                    ->with('success', '✓ Pesanan telah berhasil DIBATALKAN.');
+}
 }
