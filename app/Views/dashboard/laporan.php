@@ -380,19 +380,21 @@
                         if (!addedProductIds.has(item.id)) {
                             addedProductIds.add(item.id);
                             const rowHtml = `
-                            <tr id="row_${item.id}">
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="<?= base_url('uploads/products/') ?>${item.gambar_produk}" class="rounded me-3" style="width: 45px; height: 45px; object-fit: cover;">
-                                        <div><h6 class="mb-0 fw-bold">${item.nama_produk}</h6><small class="text-muted">Varian: ${item.nama_varian || '-'}</small></div>
-                                    </div>
-                                </td>
-                                <td class="text-center"><span class="badge bg-light text-dark border">${item.nama_bahan || '-'}</span></td>
-                                <td class="text-center"><span class="fw-bold fs-5">${parseFloat(item.stok)}</span> <small class="text-muted">${item.satuan_jual || 'm'}</small></td>
-                                <td class="text-center"><input type="number" name="stok[${item.id}]" class="input-stok" value="${parseFloat(item.stok)}" min="0" step="any" required></td>
-                                <td class="text-center"><button type="button" class="btn btn-sm btn-outline-danger" onclick="removeRow('${item.id}')"><i class="fas fa-times"></i></button></td>
-                            </tr>
-                        `;
+<tr id="row_${item.id}">
+    <td>
+        <div class="d-flex align-items-center">
+            <img src="<?= base_url('uploads/products/') ?>${item.gambar_produk}" class="rounded me-3" style="width: 45px; height: 45px; object-fit: cover;">
+            <div><h6 class="mb-0 fw-bold">${item.nama_produk}</h6><small class="text-muted">Varian: ${item.nama_varian || '-'}</small></div>
+        </div>
+    </td>
+    <td class="text-center"><span class="badge bg-light text-dark border">${item.nama_bahan || '-'}</span></td>
+    <td class="text-center"><span class="fw-bold fs-5">${parseFloat(item.stok)}</span> <small class="text-muted">${item.satuan_jual || 'm'}</small></td>
+    
+    <td class="text-center"><input type="number" name="stok[${item.id}]" class="input-stok" value="0" min="0" step="any" required></td>
+    
+    <td class="text-center"><button type="button" class="btn btn-sm btn-outline-danger" onclick="removeRow('${item.id}')"><i class="fas fa-times"></i></button></td>
+</tr>
+`;
                             tableStokBody.insertAdjacentHTML('beforeend', rowHtml);
                         }
                     });
@@ -413,29 +415,36 @@
         }
     };
 
+    // 4. AJAX POST: Menyimpan Perubahan Kuantitas Banyak Stok Sekaligus ke DB
     btnSaveBulk.addEventListener('click', function() {
-        const formData = new FormData(document.getElementById('form_bulk_stok'));
-        if (addedProductIds.size === 0) return;
+        const formElement = document.getElementById('form_bulk_stok');
+        const formData = new FormData(formElement);
 
         btnSaveBulk.disabled = true;
         btnSaveBulk.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan...`;
 
         fetch('<?= base_url('admin/laporan/update-stok-bulk') ?>', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(res => res.json())
-            .then(res => {
-                alert(res.message);
-                if (res.success) location.reload();
-            })
-            .finally(() => {
-                btnSaveBulk.disabled = false;
-                btnSaveBulk.innerHTML = `<i class="fas fa-save me-2"></i> Simpan Perubahan Stok`;
-            });
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                // TAMBAHKAN BARIS INI UNTUK MENYISIPKAN TOKEN KEAMANAN CI 4
+                '<?= csrf_header() ?>': '<?= csrf_hash() ?>'
+            }
+        })
+        .then(res => res.json())
+        .then(res => {
+            alert(res.message);
+            if (res.success) location.reload();
+        })
+        .catch(error => {
+            console.error('Error executing bulk update:', error);
+            alert('Gagal mengeksekusi pembaruan data massal.');
+        })
+        .finally(() => {
+            btnSaveBulk.disabled = false;
+            btnSaveBulk.innerHTML = `<i class="fas fa-save me-2"></i> Simpan Perubahan Stok`;
+        });
     });
 </script>
 <?= $this->endSection() ?>

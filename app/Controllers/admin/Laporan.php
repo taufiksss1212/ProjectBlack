@@ -32,27 +32,40 @@ class Laporan extends BaseController
         return $this->response->setJSON($products);
     }
 
-    // 2. AJAX: Simpan Stok Massal
+    // 2. AJAX: Simpan Tambahan Stok Massal (Terakumulasi Otomatis)
     public function updateStokBulk()
     {
         $stokInput = $this->request->getPost('stok');
         if (empty($stokInput) || !is_array($stokInput)) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Format tidak valid.']);
+            return $this->response->setJSON(['success' => false, 'message' => 'Format data entri tidak valid.']);
         }
 
         $db = \Config\Database::connect();
         $db->transStart();
-        foreach ($stokInput as $id => $stokBaru) {
-            if ($stokBaru >= 0) {
-                $this->produkModel->update($id, ['stok' => $stokBaru]);
+
+        foreach ($stokInput as $id => $jumlahMasuk) {
+            // Pastikan hanya memproses baris input yang diisi angka lebih besar dari 0
+            if ($jumlahMasuk > 0) {
+                // 1. Ambil data stok produk yang tersimpan saat ini di database
+                $produk = $this->produkModel->find($id);
+                
+                if ($produk) {
+                    // 2. Kalkulasi akumulasi: Stok Lama + Tambahan Barang Masuk baru
+                    $stokLama = floatval($produk['stok']);
+                    $stokBaru = $stokLama + floatval($jumlahMasuk);
+
+                    // 3. Update data stok terbaru ke master tabel produk
+                    $this->produkModel->update($id, ['stok' => $stokBaru]);
+                }
             }
         }
+
         $db->transComplete();
 
         if ($db->transStatus() === false) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Gagal memperbarui stok.']);
+            return $this->response->setJSON(['success' => false, 'message' => 'Gagal memperbarui stok database.']);
         }
-        return $this->response->setJSON(['success' => true, 'message' => 'Seluruh data stok berhasil diperbarui!']);
+        return $this->response->setJSON(['success' => true, 'message' => '✓ Seluruh tambahan kuantitas barang masuk berhasil diakumulasikan!']);
     }
 
     // 3. AJAX: Ambil Data Distribusi (Barang Keluar)
